@@ -78,6 +78,7 @@
     "@storm-software/git-tools": "catalog:",
     "@storm-software/linting-tools": "catalog:",
     "@storm-software/markdownlint": "catalog:",
+    "@storm-software/pnpm-tools": "catalog:",
     "@storm-software/prettier": "catalog:",
     "@storm-software/tsconfig": "catalog:",
     "@storm-software/untyped": "catalog:",
@@ -100,7 +101,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "^26.3.0",
+      "version": "^26.7.0",
       "onFail": "download"
     }
   },
@@ -123,6 +124,6 @@
       "release"
     ]
   },
-  "prettier": "@storm-software/prettier/recommended.json",
+  "prettier": "@storm-software/prettier/recommended",
   "triggerEmptyDevReleaseByIncrementingThisNumber": 0
 }

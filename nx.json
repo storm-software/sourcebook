@@ -28,5 +28,8 @@
     "applyChanges": true,
     "globalGenerators": ["@nx/js:typescript-sync"]
   },
-  "analytics": false
+  "analytics": false,
+  "migrate": {
+    "agentic": true
+  }
 }
