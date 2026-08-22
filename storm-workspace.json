@@ -6,5 +6,11 @@
   "repository": "https://github.com/storm-software/sourcebook",
   "packageManager": "pnpm",
   "logLevel": "trace",
-  "docs": "https://docs.stormsoftware.com/projects/sourcebook"
+  "docs": "https://docs.stormsoftware.com/projects/sourcebook",
+    "release": {
+    "banner": {
+      "url": "https://public.storm-cdn.com/sourcebook/media/banner-1280x320-dark.gif",
+      "alt": "Sourcebook's logo banner"
+    }
+  }
 }

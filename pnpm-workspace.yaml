@@ -14,18 +14,19 @@ catalog:
   "@powerlines/nx": ^0.13.251
   "@powerlines/tsconfig": ^0.4.255
   "@powerlines/tsdoc": ^0.2.203
-  "@storm-software/config": ^1.138.69
-  "@storm-software/config-tools": ^1.190.133
-  "@storm-software/cspell": ^0.46.200
-  "@storm-software/eslint": ^0.170.168
-  "@storm-software/git-tools": ^2.131.141
-  "@storm-software/linting-tools": ^1.134.63
-  "@storm-software/markdownlint": ^0.30.288
-  "@storm-software/pnpm-tools": ^0.7.147
-  "@storm-software/prettier": ^0.59.186
-  "@storm-software/tsconfig": ^0.48.199
-  "@storm-software/untyped": ^0.24.275
-  "@storm-software/workspace-tools": ^1.297.2
+  "@storm-software/config": ^1.138.70
+  "@storm-software/config-tools": ^1.190.134
+  "@storm-software/cspell": ^0.46.201
+  "@storm-software/eslint": ^0.170.169
+  "@storm-software/eslint-plugin-pnpm": ^0.0.97
+  "@storm-software/git-tools": ^2.131.142
+  "@storm-software/linting-tools": ^1.134.64
+  "@storm-software/markdownlint": ^0.30.289
+  "@storm-software/pnpm-tools": ^0.7.148
+  "@storm-software/prettier": ^0.59.187
+  "@storm-software/tsconfig": ^0.48.200
+  "@storm-software/untyped": ^0.24.276
+  "@storm-software/workspace-tools": ^1.297.3
   "@types/node": ^25.9.5
   "@typescript/native-preview": 7.0.0-dev.20251218.3
   copyfiles: ^2.4.1
