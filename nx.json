@@ -16,12 +16,34 @@
         "typecheck": true,
         "build": false,
         "verboseOutput": false
-      }
+      },
+      "exclude": ["packages/core/*"]
     },
     "@storm-software/workspace-tools/plugins/typescript",
     "@storm-software/workspace-tools/plugins/typescript/untyped",
     "@storm-software/workspace-tools/plugins/typescript/tsdown",
-    "@powerlines/nx/plugin"
+    "@powerlines/nx/plugin",
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["packages/core/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.lib.json"
+        }
+      }
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "test",
+        "ciTargetName": "test-ci",
+        "testMode": "watch"
+      }
+    }
   ],
   "sync": {
     "applyChanges": true,
