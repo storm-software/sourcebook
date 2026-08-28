@@ -16,8 +16,8 @@
 
  ------------------------------------------------------------------- */
 
-import type { DocumentJob } from "./model.js";
-import { DocumentJobSchema } from "./model.js";
+import type { DocumentJob } from "./model";
+import { DocumentJobSchema } from "./model";
 
 export interface PipelineCheckpoint {
   key: string;

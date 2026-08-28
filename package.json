@@ -105,13 +105,6 @@
     "vitest": "catalog:",
     "zx": "catalog:"
   },
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^26.7.0",
-      "onFail": "download"
-    }
-  },
   "manypkg": {
     "defaultBranch": "main",
     "workspaceProtocol": "require"

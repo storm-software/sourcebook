@@ -16,10 +16,10 @@
 
  ------------------------------------------------------------------- */
 
-import type { DocumentPage } from "./model.js";
-import { DocumentPageSchema } from "./model.js";
-import type { PipelineStage } from "./pipeline.js";
-import { toJsonValue } from "./pipeline.js";
+import type { DocumentPage } from "./model";
+import { DocumentPageSchema } from "./model";
+import type { PipelineStage } from "./pipeline";
+import { toJsonValue } from "./pipeline";
 
 export interface FakeAgentStageOptions {
   id?: string;

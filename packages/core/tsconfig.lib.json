@@ -2,15 +2,17 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
-    "rootDir": "src",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
     "types": ["node"],
     "emitDeclarationOnly": false,
     "outDir": "dist"
   },
   "references": [],
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "powerlines.config.ts",
+    "powerlines.d.ts"
+  ],
   "exclude": [
     "vite.config.ts",
     "vite.config.mts",

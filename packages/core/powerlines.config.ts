@@ -16,14 +16,13 @@
 
  ------------------------------------------------------------------- */
 
-import { defineConfig } from "@storm-software/eslint";
+import { plugin as tsdown } from "@powerlines/plugin-tsdown";
+import type { UserConfig } from "powerlines";
+import { defineConfig } from "powerlines/config";
 
-Error.stackTraceLimit = Number.POSITIVE_INFINITY;
-
-/** @type {import('eslint').Linter.Config[]} */
-export default defineConfig({
-  name: "sourcebook",
-  tsdoc: {
-    configFile: "@powerlines/tsdoc/recommended.json"
-  }
+const config: UserConfig = defineConfig({
+  input: ["src/index.ts"],
+  plugins: [tsdown()]
 });
+
+export default config;
