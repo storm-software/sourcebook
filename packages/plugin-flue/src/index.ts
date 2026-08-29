@@ -16,8 +16,5 @@
 
  ------------------------------------------------------------------- */
 
-export * from "./lib/checkpoint.js";
-export * from "./lib/fake-agent.js";
-export * from "./lib/markdown.js";
-export * from "./lib/model.js";
-export * from "./lib/pipeline.js";
+export * from "./lib/agent.js";
+export * from "./lib/stage.js";

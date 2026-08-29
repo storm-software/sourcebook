@@ -16,33 +16,13 @@
 
  ------------------------------------------------------------------- */
 
-import type { DocumentPage } from "./model.js";
-import { DocumentPageSchema } from "./model.js";
-import type { PipelineStage } from "./pipeline.js";
-import { toJsonValue } from "./pipeline.js";
+import { plugin as tsdown } from "@powerlines/plugin-tsdown";
+import type { UserConfig } from "powerlines";
+import { defineConfig } from "powerlines/config";
 
-export interface FakeAgentStageOptions {
-  id?: string;
-  version?: string;
-  documents: readonly DocumentPage[];
-}
+const config: UserConfig = defineConfig({
+  input: ["src/index.ts"],
+  plugins: [tsdown()]
+});
 
-export function createFakeAgentStage(
-  options: FakeAgentStageOptions
-): PipelineStage {
-  const documents = options.documents.map(document =>
-    DocumentPageSchema.parse(document)
-  );
-
-  return {
-    id: options.id ?? "fake-agent",
-    kind: "agent",
-    version: options.version ?? "1",
-    idempotent: true,
-    config: toJsonValue({ documents }),
-    execute: ({ signal }) => {
-      signal.throwIfAborted();
-      return { documents: structuredClone(documents) };
-    }
-  };
-}
+export default config;

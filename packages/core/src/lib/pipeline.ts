@@ -17,9 +17,9 @@
  ------------------------------------------------------------------- */
 
 import { createHash } from "node:crypto";
-import type { CheckpointStore } from "./checkpoint";
-import type { DocumentJob } from "./model";
-import { DiagnosticSchema, DocumentJobSchema } from "./model";
+import type { CheckpointStore } from "./checkpoint.js";
+import type { DocumentJob } from "./model.js";
+import { DiagnosticSchema, DocumentJobSchema } from "./model.js";
 
 export type JsonValue =
   boolean | number | string | null | JsonValue[] | { [key: string]: JsonValue };

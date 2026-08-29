@@ -21,8 +21,8 @@ import type {
   DocumentPage,
   DocumentSection,
   OutputArtifact
-} from "./model";
-import type { PipelineStage } from "./pipeline";
+} from "./model.js";
+import type { PipelineStage } from "./pipeline.js";
 
 export interface MetadataSerializer {
   id: string;

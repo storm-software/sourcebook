@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { MemoryCheckpointStore } from "./checkpoint.js";
-import { createFakeAgentStage } from "./fake-agent.js";
-import { createMarkdownRendererStage } from "./markdown.js";
-import { createDocumentJob, type DocumentPage } from "./model.js";
+import { MemoryCheckpointStore } from "../../src/lib/checkpoint.js";
+import { createFakeAgentStage } from "../../src/lib/fake-agent.js";
+import { createMarkdownRendererStage } from "../../src/lib/markdown.js";
+import { createDocumentJob, type DocumentPage } from "../../src/lib/model.js";
 import {
   createPipeline,
   executePipeline,
   type PipelineEvent,
   type PipelineStage
-} from "./pipeline.js";
+} from "../../src/lib/pipeline.js";
 
 const page: DocumentPage = {
   slug: "getting-started",
