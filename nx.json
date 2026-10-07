@@ -21,7 +21,10 @@
     },
     "@storm-software/workspace-tools/plugins/typescript",
     "@storm-software/workspace-tools/plugins/typescript/untyped",
-    "@storm-software/workspace-tools/plugins/typescript/tsdown",
+    {
+      "plugin": "@powerlines/nx/plugin",
+      "include": ["packages/config/**"]
+    },
     {
       "plugin": "@nx/js/typescript",
       "include": ["packages/core/*"],

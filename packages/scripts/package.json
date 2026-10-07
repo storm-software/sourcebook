@@ -9,6 +9,7 @@
     "c12": "catalog:"
   },
   "devDependencies": {
-    "tsdown": "catalog:"
+    "@powerlines/plugin-tsdown": "catalog:",
+    "powerlines": "catalog:"
   }
 }

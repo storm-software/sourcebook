@@ -2,8 +2,5 @@
   "name": "@sourcebook/tools-config",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
-  "dependencies": {
-    "tsdown": "catalog:"
-  }
+  "type": "module"
 }

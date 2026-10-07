@@ -12,12 +12,15 @@
         "cwd": "packages/scripts"
       }
     },
+    "bundle": {
+      "executor": "@powerlines/nx:build",
+      "dependsOn": ["clean", "^build"]
+    },
     "build": {
       "executor": "nx:run-commands",
-      "dependsOn": ["clean"],
+      "dependsOn": ["bundle"],
       "options": {
         "commands": [
-          "tsdown --config tsdown.config.ts",
           "for scripts_dir in ../../skills/*/scripts; do cp -R dist/. \"$scripts_dir\"; done"
         ],
         "cwd": "packages/scripts",

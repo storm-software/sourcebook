@@ -16,12 +16,19 @@
 
  ------------------------------------------------------------------- */
 
-import { defineConfig } from "tsdown";
+import { plugin as tsdown } from "@powerlines/plugin-tsdown";
+import { defineConfig } from "powerlines/config";
 
 export default defineConfig({
-  entry: ["src/index.ts"],
-  format: ["cjs", "esm"],
-  dts: true,
-  clean: true,
-  outDir: "dist"
+  input: ["src/read-config.ts"],
+  output: {
+    dts: false,
+    format: ["esm"],
+    minify: true
+  },
+  platform: "node",
+  plugins: [tsdown({ dts: false, exports: false, unbundle: false })],
+  resolve: {
+    noExternal: ["c12"]
+  }
 });

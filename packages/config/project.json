@@ -9,5 +9,9 @@
       "manifestRootsToUpdate": ["{projectRoot}"]
     }
   },
-  "targets": {}
+  "targets": {
+    "build": {
+      "dependsOn": ["clean"]
+    }
+  }
 }

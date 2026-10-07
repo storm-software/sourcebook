@@ -7,10 +7,6 @@
     "declarationMap": false,
     "outDir": "out-tsc"
   },
-  "references": [
-    {
-      "path": "../config"
-    }
-  ],
-  "include": ["src/**/*.ts", "tsdown.config.ts"]
+  "references": [{ "path": "../config" }],
+  "include": ["src/**/*.ts", "powerlines.config.ts", "powerlines.d.ts"]
 }
