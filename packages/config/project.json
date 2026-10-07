@@ -4,5 +4,10 @@
   "sourceRoot": "packages/config/src",
   "projectType": "library",
   "tags": [],
+  "release": {
+    "version": {
+      "manifestRootsToUpdate": ["{projectRoot}"]
+    }
+  },
   "targets": {}
 }
