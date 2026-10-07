@@ -1,0 +1,23 @@
+{
+  "name": "@sourcebook/config",
+  "version": "0.0.1",
+  "type": "module",
+  "private": false,
+  "description": "Configuration types and helpers for the Sourcebook skill",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "tsdown": "catalog:"
+  }
+}

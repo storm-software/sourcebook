@@ -1,0 +1,28 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "scripts",
+  "sourceRoot": "packages/scripts/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["pnpm exec rimraf dist out-tsc ../../skills/*/scripts/*"],
+        "cwd": "packages/scripts"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["clean"],
+      "options": {
+        "commands": [
+          "tsdown --config tsdown.config.ts",
+          "for scripts_dir in ../../skills/*/scripts; do cp -R dist/. \"$scripts_dir\"; done"
+        ],
+        "cwd": "packages/scripts",
+        "parallel": false
+      }
+    }
+  }
+}

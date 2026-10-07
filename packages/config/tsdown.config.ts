@@ -16,15 +16,12 @@
 
  ------------------------------------------------------------------- */
 
-import { defineConfig } from "@storm-software/eslint";
+import { defineConfig } from "tsdown";
 
-Error.stackTraceLimit = Number.POSITIVE_INFINITY;
-
-/** @type {import('eslint').Linter.Config[]} */
 export default defineConfig({
-  name: "sourcebook",
-  tsdoc: {
-    configFile: "@powerlines/tsdoc/recommended.json"
-  },
-  ignores: ["node_modules", "dist", "skills/*/scripts"]
+  entry: ["src/index.ts"],
+  format: ["cjs", "esm"],
+  dts: true,
+  clean: true,
+  outDir: "dist"
 });

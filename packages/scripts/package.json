@@ -1,0 +1,14 @@
+{
+  "name": "@sourcebook/scripts",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "description": "Scripts used by the Sourcebook skill",
+  "dependencies": {
+    "@sourcebook/config": "workspace:*",
+    "c12": "catalog:"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:"
+  }
+}

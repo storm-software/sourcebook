@@ -6,9 +6,11 @@
 # compiled output
 dist
 tmp
-/out-tsc
+out-tsc
 out
 .nx
+
+graphify-out
 
 powerlines.d.ts
 .powerlines

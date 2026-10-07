@@ -7,10 +7,10 @@
       "path": "./tools/config"
     },
     {
-      "path": "./packages/core"
+      "path": "./packages/config"
     },
     {
-      "path": "./packages/plugin-flue"
+      "path": "./packages/scripts"
     }
   ],
   "files": []

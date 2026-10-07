@@ -6,6 +6,12 @@
       "sourceType": "github",
       "skillPath": "skills/productivity/grill-me/SKILL.md",
       "computedHash": "9cdbb4b8f7a3aeaef82e6230c9e823500d4a8a1214c726cf342cf9829d34fc7d"
+    },
+    "next-dev-loop": {
+      "source": "vercel/next.js",
+      "sourceType": "github",
+      "skillPath": "skills/next-dev-loop/SKILL.md",
+      "computedHash": "c305c83b726212e0284930c65cded2c4a4ab85f9bfccfa83b62274247fe3580e"
     }
   }
 }

@@ -1,9 +1,0 @@
-{
-  "name": "plugin-flue",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/plugin-flue/src",
-  "projectType": "library",
-  "tags": [],
-  "// targets": "to see all targets run: nx show project plugin-flue --web",
-  "targets": {}
-}

@@ -39,6 +39,8 @@
     "monorepo"
   ],
   "scripts": {
+    "test:sourcebook": "node --test tests/read-config.test.mjs",
+    "typecheck:sourcebook": "tsc --noEmit --project tsconfig.json",
     "adr": "pnpm log4brains adr new",
     "adr-preview": "pnpm log4brains preview",
     "bootstrap": "pnpm exec zx tools/scripts/src/bootstrap.mjs",
@@ -63,6 +65,9 @@
     "update-storm": "pnpm exec zx tools/scripts/src/update-storm.mjs",
     "view-config": "pnpm exec storm-config"
   },
+  "dependencies": {
+    "c12": "catalog:"
+  },
   "devDependencies": {
     "@ls-lint/ls-lint": "catalog:",
     "@nx/devkit": "catalog:",
@@ -75,6 +80,7 @@
     "@powerlines/nx": "catalog:",
     "@powerlines/tsconfig": "catalog:",
     "@powerlines/tsdoc": "catalog:",
+    "@shell-shock/nx": "catalog:",
     "@storm-software/config": "catalog:",
     "@storm-software/config-tools": "catalog:",
     "@storm-software/cspell": "catalog:",
