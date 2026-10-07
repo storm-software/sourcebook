@@ -335,10 +335,6 @@ catalogs:
 importers:
 
   .:
-    dependencies:
-      c12:
-        specifier: 'catalog:'
-        version: 3.3.4
     devDependencies:
       '@ls-lint/ls-lint':
         specifier: 'catalog:'
@@ -424,6 +420,9 @@ importers:
       '@typescript/native-preview':
         specifier: 'catalog:'
         version: 7.0.0-dev.20251218.3
+      c12:
+        specifier: 'catalog:'
+        version: 3.3.4
       copyfiles:
         specifier: 'catalog:'
         version: 2.4.1
