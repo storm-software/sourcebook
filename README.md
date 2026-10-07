@@ -90,9 +90,9 @@ With local output, the skill writes under each identified project directory; oth
 
 ## Installation
 
-Install the Sourcebook plugin from this repository to use the `sourcebook-docs` and `sourcebook-blog` agent skills. The plugin bundles each skill's reader, references, and helper scripts.
+Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, and `sourcebook-readme` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-readme` updates a project's `README.md` without requiring a Sourcebook configuration file.
 
-Before using either skill, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
+Before using `sourcebook-docs` or `sourcebook-blog`, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
 
 **Claude Code:**
 
@@ -128,7 +128,7 @@ Copilot uses the portable `plugin.json` manifest and the same marketplace manife
 
 The repository includes Cursor's marketplace and plugin manifests. Install **Sourcebook** from **Cursor Settings → Plugins** or run `/add-plugin sourcebook` after its marketplace is available in Cursor. For a local checkout, place it at `~/.cursor/plugins/local/sourcebook`.
 
-After installation, start a new agent session in the workspace that contains the Sourcebook configuration. Ask the agent to generate or update documentation, or to enhance blog articles; it selects the matching Sourcebook skill from the request.
+After installation, start a new agent session in the target workspace. Ask the agent to generate or update documentation, enhance blog articles, or update a project's README; it selects the matching Sourcebook skill from the request.
 
 ## Development
 

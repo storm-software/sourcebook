@@ -1,6 +1,6 @@
 {
   "name": "sourcebook",
-  "description": "Generate workspace documentation and update blog articles with the Sourcebook agent skills.",
+  "description": "Generate workspace documentation and update blog articles and project READMEs with the Sourcebook agent skills.",
   "version": "0.0.1",
   "author": {
     "name": "Storm Software",
