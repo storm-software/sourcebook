@@ -11,16 +11,16 @@ The skill loads the config with [c12](https://unjs.io/packages/c12), selects ins
 Create `sourcebook.config.ts` in the workspace root:
 
 ```ts
-import { defineConfig } from '@sourcebook/config';
+import { defineConfig } from "@sourcebook/config";
 
 export default defineConfig({
-  type: 'application',
-  frontend: 'apps/web/src',
-  backend: 'apps/api/src',
-  outputPath: 'docs',
+  type: "application",
+  frontend: "apps/web/src",
+  backend: "apps/api/src",
+  outputPath: "docs",
   useLocalOutput: true,
-  displayName: 'Example',
-  instructions: 'Include a developer setup guide.',
+  displayName: "Example",
+  instructions: "Include a developer setup guide."
 });
 ```
 

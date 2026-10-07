@@ -65,9 +65,6 @@
     "update-storm": "pnpm exec zx tools/scripts/src/update-storm.mjs",
     "view-config": "pnpm exec storm-config"
   },
-  "dependencies": {
-    "c12": "catalog:"
-  },
   "devDependencies": {
     "@ls-lint/ls-lint": "catalog:",
     "@nx/devkit": "catalog:",
@@ -97,6 +94,7 @@
     "@storm-software/workspace-tools": "catalog:",
     "@types/node": "catalog:",
     "@typescript/native-preview": "catalog:",
+    "c12": "catalog:",
     "copyfiles": "catalog:",
     "eslint": "catalog:",
     "lefthook": "catalog:",
