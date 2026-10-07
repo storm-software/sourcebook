@@ -1,0 +1,15 @@
+{
+  "name": "sourcebook",
+  "metadata": {
+    "description": "Agent skills for workspace documentation and blog articles."
+  },
+  "owner": {
+    "name": "Storm Software"
+  },
+  "plugins": [
+    {
+      "name": "sourcebook",
+      "source": "./"
+    }
+  ]
+}

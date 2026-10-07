@@ -1,7 +1,7 @@
 ---
 name: sourcebook-docs
 description: Use when generating or updating Markdown documentation for an application, library, or design system from a workspace's sourcebook.config file.
-license: MIT
+license: Apache-2.0
 metadata:
   author: storm-software
   version: "1.0.0"

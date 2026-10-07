@@ -90,6 +90,46 @@ With local output, the skill writes under each identified project directory; oth
 
 ## Installation
 
+Install the Sourcebook plugin from this repository to use the `sourcebook-docs` and `sourcebook-blog` agent skills. The plugin bundles each skill's reader, references, and helper scripts.
+
+Before using either skill, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
+
+**Claude Code:**
+
+```text
+/plugin marketplace add storm-software/sourcebook
+/plugin install sourcebook@sourcebook
+```
+
+**Codex:**
+
+```sh
+codex plugin marketplace add storm-software/sourcebook
+codex plugin add sourcebook@sourcebook
+```
+
+**Factory Droid:**
+
+```sh
+droid plugin marketplace add https://github.com/storm-software/sourcebook
+droid plugin install sourcebook@sourcebook --scope user
+```
+
+**GitHub Copilot CLI:**
+
+```sh
+copilot plugin marketplace add storm-software/sourcebook
+copilot plugin install sourcebook@sourcebook
+```
+
+Copilot uses the portable `plugin.json` manifest and the same marketplace manifest as Claude Code. In the Copilot app, add the marketplace from **Customize → Plugins** and install **Sourcebook**.
+
+**Cursor:**
+
+The repository includes Cursor's marketplace and plugin manifests. Install **Sourcebook** from **Cursor Settings → Plugins** or run `/add-plugin sourcebook` after its marketplace is available in Cursor. For a local checkout, place it at `~/.cursor/plugins/local/sourcebook`.
+
+After installation, start a new agent session in the workspace that contains the Sourcebook configuration. Ask the agent to generate or update documentation, or to enhance blog articles; it selects the matching Sourcebook skill from the request.
+
 ## Development
 
 ```sh

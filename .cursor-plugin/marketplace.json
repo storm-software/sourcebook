@@ -1,0 +1,17 @@
+{
+  "name": "sourcebook",
+  "owner": {
+    "name": "Storm Software",
+    "email": "contact@stormsoftware.com"
+  },
+  "metadata": {
+    "description": "Agent skills for workspace documentation and blog articles."
+  },
+  "plugins": [
+    {
+      "name": "sourcebook",
+      "source": "./",
+      "description": "Generate workspace documentation and update blog articles."
+    }
+  ]
+}

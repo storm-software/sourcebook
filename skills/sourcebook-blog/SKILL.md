@@ -1,7 +1,7 @@
 ---
 name: sourcebook-blog
 description: Use when generating or updating Markdown content for blog articles.
-license: MIT
+license: Apache-2.0
 metadata:
   author: storm-software
   version: "1.0.0"

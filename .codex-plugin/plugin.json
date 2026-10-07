@@ -1,0 +1,18 @@
+{
+  "name": "sourcebook",
+  "description": "Generate workspace documentation and update blog articles with the Sourcebook agent skills.",
+  "version": "0.0.1",
+  "author": {
+    "name": "Storm Software",
+    "url": "https://stormsoftware.com"
+  },
+  "homepage": "https://stormsoftware.com/projects/sourcebook",
+  "repository": "https://github.com/storm-software/sourcebook",
+  "license": "Apache-2.0",
+  "keywords": ["documentation", "blog", "agent-skills"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Sourcebook",
+    "shortDescription": "Write docs and blog articles"
+  }
+}
