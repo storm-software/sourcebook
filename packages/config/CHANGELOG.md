@@ -2,6 +2,12 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.3](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.3) (10/07/2026)
+
+### Bug Fixes
+
+- **monorepo:** Update workspace to use `powerlines` for build ([7065bb2](https://github.com/storm-software/sourcebook/commit/7065bb2))
+
 ## [0.0.2](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.2) (10/07/2026)
 
 ### Bug Fixes
