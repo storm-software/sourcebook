@@ -2,6 +2,12 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.6](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.6) (10/07/2026)
+
+### Miscellaneous
+
+- **@sourcebook/tools-readme-templates:** Update workspace `README.md` files ([8807210](https://github.com/storm-software/sourcebook/commit/8807210))
+
 ## [0.0.3](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.3) (10/07/2026)
 
 ### Bug Fixes
