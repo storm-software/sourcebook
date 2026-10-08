@@ -1,6 +1,6 @@
 {
   "name": "@sourcebook/config",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "private": false,
   "description": "Configuration types and helpers for the Sourcebook skill",
@@ -14,9 +14,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "devDependencies": {
     "@powerlines/plugin-tsdown": "catalog:",
     "powerlines": "catalog:"

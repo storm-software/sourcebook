@@ -2,6 +2,12 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.7](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.7) (10/08/2026)
+
+### Miscellaneous
+
+- **monorepo:** Update github action versions ([e4bb267](https://github.com/storm-software/sourcebook/commit/e4bb267))
+
 ## [0.0.6](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.6) (10/07/2026)
 
 ### Miscellaneous
