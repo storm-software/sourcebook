@@ -90,7 +90,7 @@ With local output, the skill writes under each identified project directory; oth
 
 ## Installation
 
-Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, `sourcebook-editor`, and `sourcebook-readme` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-editor` reviews and polishes existing documentation or blog updates, while `sourcebook-readme` updates a project's `README.md`; neither requires a Sourcebook configuration file.
+Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, `sourcebook-editor`, `sourcebook-readme`, and `sourcebook-adr` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-editor` reviews and polishes existing documentation or blog updates, `sourcebook-readme` updates a project's `README.md`, and `sourcebook-adr` records significant technology and design decisions as log4brains-compatible Architecture Decision Records; none of them requires a Sourcebook configuration file.
 
 Before using `sourcebook-docs` or `sourcebook-blog`, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
 
