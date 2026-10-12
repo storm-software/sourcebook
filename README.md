@@ -94,6 +94,16 @@ Install the Sourcebook plugin from this repository to use the `sourcebook-docs`,
 
 Before using `sourcebook-docs` or `sourcebook-blog`, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
 
+**Agent Skills:**
+
+```sh
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-adr
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-editor
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-docs
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-blog
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-readme
+```
+
 **Claude Code:**
 
 ```text
