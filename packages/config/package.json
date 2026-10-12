@@ -14,7 +14,9 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@powerlines/plugin-tsdown": "catalog:",
     "powerlines": "catalog:"

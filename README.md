@@ -90,7 +90,7 @@ With local output, the skill writes under each identified project directory; oth
 
 ## Installation
 
-Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, `sourcebook-editor`, `sourcebook-readme`, and `sourcebook-adr` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-editor` reviews and polishes existing documentation or blog updates, `sourcebook-readme` updates a project's `README.md`, and `sourcebook-adr` records significant technology and design decisions as log4brains-compatible Architecture Decision Records; none of them requires a Sourcebook configuration file.
+Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, `sourcebook-editor`, `sourcebook-readme`, `sourcebook-guide`, and `sourcebook-adr` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-editor` reviews and polishes existing documentation or blog updates, `sourcebook-readme` updates a project's `README.md`, `sourcebook-guide` writes a guided walk-through of one piece of functionality when you invoke it (`/sourcebook-guide <topic>`), and `sourcebook-adr` records significant technology and design decisions as log4brains-compatible Architecture Decision Records; none of them requires a Sourcebook configuration file.
 
 Before using `sourcebook-docs` or `sourcebook-blog`, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
 
@@ -102,6 +102,7 @@ npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-e
 npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-docs
 npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-blog
 npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-readme
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-guide
 ```
 
 **Claude Code:**
