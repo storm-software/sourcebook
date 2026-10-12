@@ -17,7 +17,11 @@
  ------------------------------------------------------------------- */
 
 import { plugin as tsdown } from "@powerlines/plugin-tsdown";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { defineConfig } from "powerlines/config";
+
+const JITI_BABEL = `"../dist/babel.cjs"`;
 
 export default defineConfig({
   input: ["src/read-config.ts"],
@@ -27,7 +31,36 @@ export default defineConfig({
     minify: true
   },
   platform: "node",
-  plugins: [tsdown({ dts: false, exports: false, unbundle: false })],
+  plugins: [
+    tsdown({
+      dts: false,
+      exports: false,
+      unbundle: false,
+      plugins: [
+        {
+          // jiti (used by c12 for TypeScript configs) lazily requires its Babel
+          // transform from `../dist/babel.cjs`, which does not exist once the
+          // skill is copied out of this repository. Ship it beside the bundle.
+          name: "sourcebook:jiti-babel",
+          transform: {
+            filter: { id: /[\\/]jiti[\\/]lib[\\/]jiti\.mjs$/ },
+            handler(code, id) {
+              if (!code.includes(JITI_BABEL)) {
+                throw new Error(`Expected ${JITI_BABEL} in ${id}`);
+              }
+              this.emitFile({
+                type: "asset",
+                fileName: "babel.cjs",
+                source: readFileSync(resolve(dirname(id), "../dist/babel.cjs"))
+              });
+
+              return code.replace(JITI_BABEL, `"./babel.cjs"`);
+            }
+          }
+        }
+      ]
+    })
+  ],
   resolve: {
     noExternal: ["c12"]
   }
