@@ -2,6 +2,12 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.10](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.10) (10/12/2026)
+
+### Features
+
+- **monorepo:** Added the `sourcebook-guide` skill for generating helpful user guides ([554badf](https://github.com/storm-software/sourcebook/commit/554badf))
+
 ## [0.0.7](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.7) (10/08/2026)
 
 ### Miscellaneous
