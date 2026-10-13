@@ -78,7 +78,7 @@ function validatePathValue(
 }
 
 const docsPathFields = {
-  application: ["src", "backend", "frontend"],
+  application: ["variant", "src", "backend", "frontend"],
   library: ["packages"],
   "design-system": [
     "tokens",
@@ -130,6 +130,7 @@ function validateDocsEntry(
 
   switch (config.type) {
     case "application": {
+      const variant = validateString(config, "variant", location);
       const src = path("src");
       const backend = path("backend");
       const frontend = path("frontend");
@@ -137,6 +138,7 @@ function validateDocsEntry(
       return {
         ...base,
         type: "application",
+        ...(variant === undefined ? {} : { variant }),
         ...(src === undefined ? {} : { src }),
         ...(backend === undefined ? {} : { backend }),
         ...(frontend === undefined ? {} : { frontend })

@@ -32,7 +32,25 @@ export interface SourcebookDocsConfig {
   instructions?: string;
 }
 
-export interface SourcebookSingleApplicationDocsConfig extends SourcebookDocsConfig {
+export type SourcebookApplicationVariant =
+  "web" | "mobile" | "desktop" | "cli" | "service";
+
+export interface SourcebookBaseApplicationDocsConfig extends SourcebookDocsConfig {
+  /**
+   * The type of project, which is always "application" for this configuration.
+   */
+  type: "application";
+
+  /**
+   * The variant of the application, such as "web", "mobile", "desktop", "cli", "service", etc.
+   *
+   * @remarks
+   * This field helps to categorize the application based on its deployment target or environment. While {@link SourcebookApplicationVariant | a hardcoded list of application variants} exists, custom variants can also be specified as needed.
+   */
+  variant?: SourcebookApplicationVariant | string;
+}
+
+export interface SourcebookSingleApplicationDocsConfig extends SourcebookBaseApplicationDocsConfig {
   /**
    * The type of project, which is always "application" for this configuration.
    */
@@ -44,7 +62,7 @@ export interface SourcebookSingleApplicationDocsConfig extends SourcebookDocsCon
   src?: string | string[];
 }
 
-export interface SourcebookMultiApplicationDocsConfig extends SourcebookDocsConfig {
+export interface SourcebookMultiApplicationDocsConfig extends SourcebookBaseApplicationDocsConfig {
   /**
    * The type of project, which is always "application" for this configuration.
    */
