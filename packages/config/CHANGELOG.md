@@ -2,6 +2,12 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.11](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.11) (10/13/2026)
+
+### Bug Fixes
+
+- **config:** Added the `variant` option to the application config ([da68a52](https://github.com/storm-software/sourcebook/commit/da68a52))
+
 ## [0.0.10](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.10) (10/12/2026)
 
 ### Features
