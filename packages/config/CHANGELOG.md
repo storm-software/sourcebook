@@ -2,6 +2,13 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.12](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.12) (10/21/2026)
+
+### Features
+
+- **monorepo:** Added the `sourcebook-openapi` and `sourcebook` skills to workspace ([b5386ae](https://github.com/storm-software/sourcebook/commit/b5386ae))
+- **core:** Initial check-in of the core Sourcebook package ([73f4664](https://github.com/storm-software/sourcebook/commit/73f4664))
+
 ## [0.0.11](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.11) (10/13/2026)
 
 ### Bug Fixes
