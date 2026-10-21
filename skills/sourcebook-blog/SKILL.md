@@ -20,25 +20,18 @@ Enhance the blog articles described by the target workspace's `sourcebook.config
 
 ## Front matter
 
-Front matter is used to add metadata to your Markdown file (`title`, `description`, `summary`, and `tags`). It is provided at the very top of the file, enclosed by three dashes `---`. The content is parsed as `YAML`.
+`@sourcebook/core` compiles an article only when YAML front matter at the top of the file includes `title`, `description`, and `summary`. `summary` is the TLDR shown at the top of the article. Write it yourself; the compiler does not invent one from the description. The compiler can fall back to the first level-1 heading for `title` and the first paragraph for `description`, but generated articles must set all three explicitly.
 
-If no Front matter is detected, the metadata will be populated with the following:
-
-- `title`: first main title detected
-- `description`: first paragraph detected
-- `summary`: A summary or TLDR (Too long; didn't read) of the article content. This will be displayed at the top of the article
-- `tags`: comma-separated list of tags detected
+`tags` is optional. Use a YAML list or a comma-separated string. Add tags only when the article supports accurate values, and do not invent a tag to fill the field. Preserve an existing tag format.
 
 ```markdown
 ---
 title: This is a custom title
 description: This is a custom description
 summary: This is a custom summary
-tags: api end-point, graphql
+tags: [api, graphql]
 ---
 ```
-
-If any of the above metadata are missing, add them when the article supports accurate values. Use specific, factual descriptions and summaries; do not invent a tag merely to fill a field. Preserve the article's existing tag format.
 
 ## Figures
 

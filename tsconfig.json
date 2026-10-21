@@ -11,6 +11,9 @@
     },
     {
       "path": "./packages/scripts"
+    },
+    {
+      "path": "./packages/core"
     }
   ],
   "files": []

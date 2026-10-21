@@ -30,21 +30,33 @@ catalog:
   "@storm-software/tsdoc": ^0.13.301
   "@storm-software/untyped": ^0.24.291
   "@storm-software/workspace-tools": ^1.297.18
+  "@types/hast": ^3.0.5
+  "@types/mdast": ^4.0.4
   "@types/node": ^25.9.9
   "@typescript/native-preview": 7.0.0-dev.20251218.3
   copyfiles: ^2.4.1
   eslint: ^10.12.0
+  github-slugger: ^2.0.0
+  hast-util-to-string: ^3.0.1
   lefthook: ^1.13.6
   log4brains: ^1.1.0
   markdownlint-cli2: 0.17.2
+  mdast-util-to-string: ^4.0.0
   nx: 23.1.1
   powerlines: ^0.47.214
   prettier: ^3.9.10
+  rehype-stringify: ^10.0.1
+  remark: ^15.0.1
+  remark-gfm: ^4.0.1
+  remark-rehype: ^11.1.2
   rimraf: ^6.1.3
+  unified: ^11.0.5
   verdaccio: 6.0.5
+  vfile: ^6.0.3
   vite: ^8.3.4
   vitest: ~4.1.11
   c12: ^3.3.4
+  yaml: ^2.9.1
   zx: ^8.8.5
 cleanupUnusedCatalogs: true
 catalogMode: strict

@@ -27,7 +27,8 @@ export interface SourcebookDocsConfig {
   outputPath?: string;
 
   /**
-   * Any additional instructions that should be included when generating documentation for the project.
+   * Extra instructions for this documentation target.
+   * Generated Markdown must still include the fields in {@link documentationMarkdownInstructions}.
    */
   instructions?: string;
 }
@@ -148,7 +149,8 @@ export interface SourcebookBlogConfig {
   generateHeroImages?: boolean;
 
   /**
-   * Any additional instructions that should be included when enhancing the blog articles for the project.
+   * Extra instructions for blog articles.
+   * Generated articles must still include the blog fields in {@link documentationMarkdownInstructions}.
    */
   instructions?: string;
 }
@@ -199,13 +201,33 @@ export interface SourcebookConfig {
   blog?: SourcebookBlogConfig;
 
   /**
-   * Any additional instructions that should be included when generating documentation and/or the blog for the project.
+   * Extra instructions for documentation and blog generation.
+   * Generated Markdown must still include the fields in {@link documentationMarkdownInstructions}.
    */
   instructions?: string;
 }
 
+export {
+  documentationDocumentTypes,
+  documentationMarkdownInstructions,
+  documentationPageKinds,
+  documentationPageOptionalFields,
+  documentationPageRequirements,
+  guidePerspectives,
+  isDocumentationPageKind
+} from "./markdown";
+export type {
+  DocumentationDocumentType,
+  DocumentationPageKind,
+  GuidePerspective,
+  MarkdownRequirement
+} from "./markdown";
+
 /**
  * Defines the Sourcebook configuration.
+ *
+ * Markdown written for the configuration must include the page fields described by {@link documentationMarkdownInstructions}.
+ * `instructions` adds project-specific guidance and does not replace those fields.
  *
  * @param config - The Sourcebook configuration object or an array of configuration objects.
  * @returns The same Sourcebook configuration object or array of configuration objects that was passed in.

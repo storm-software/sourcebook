@@ -1,0 +1,38 @@
+{
+  "name": "@sourcebook/core",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "description": "Compile Sourcebook Markdown into documentation pages",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@sourcebook/config": "workspace:*",
+    "github-slugger": "catalog:",
+    "hast-util-to-string": "catalog:",
+    "mdast-util-to-string": "catalog:",
+    "rehype-stringify": "catalog:",
+    "remark": "catalog:",
+    "remark-gfm": "catalog:",
+    "remark-rehype": "catalog:",
+    "unified": "catalog:",
+    "vfile": "catalog:",
+    "yaml": "catalog:"
+  },
+  "devDependencies": {
+    "@types/hast": "catalog:",
+    "@types/mdast": "catalog:",
+    "vitest": "catalog:"
+  }
+}

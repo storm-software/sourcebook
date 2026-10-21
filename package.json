@@ -39,7 +39,7 @@
     "monorepo"
   ],
   "scripts": {
-    "test:sourcebook": "node --test tests/read-config.test.mjs",
+    "test:sourcebook": "node --test tests/read-config.test.mjs && pnpm exec vitest run --config packages/core/vitest.config.ts && pnpm exec tsc --build packages/core/tsconfig.json --pretty false",
     "typecheck:sourcebook": "tsc --noEmit --project tsconfig.json",
     "adr": "pnpm log4brains adr new",
     "adr-preview": "pnpm log4brains preview",

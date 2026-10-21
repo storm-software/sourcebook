@@ -79,6 +79,15 @@ Guidelines:
 ## 4. Deliver
 
 - **Chat:** give the walk-through as the response.
-- **File:** write the Markdown to the requested path (if only a folder is given, use `<folder>/<functionality-slug>.md`). Add front matter (`title`, `description`, `tags`) when the folder's other files use it. Do not overwrite an existing file without confirming. Report the path written.
+- **File:** write the Markdown to the requested path (if only a folder is given, use `<folder>/<functionality-slug>.md`). `@sourcebook/core` compiles that file as a guide, so start it with YAML front matter: `title`, `description`, `audience`, and `perspective` (`under-the-hood` or `hands-on`). Add `tags` only when they are accurate. Chat output does not need front matter. Do not overwrite an existing file without confirming. Report the path written.
+
+```markdown
+---
+title: Walk-through: <functionality>
+description: <one or two sentences on the trigger and the outcome>
+audience: <who>
+perspective: under-the-hood
+---
+```
 
 End with a short note on anything you could not verify and any parts of the path you left out.
