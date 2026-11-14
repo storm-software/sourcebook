@@ -336,10 +336,9 @@ export async function readSourcebookConfig(
   };
 }
 
-if (
-  process.argv[1] &&
-  resolve(process.argv[1]) === new URL(import.meta.url).pathname
-) {
+// `import.meta.main` follows symlinks, so the reader also runs when the skill
+// directory is linked (for example `.claude/skills` -> `.agents/skills`).
+if (import.meta.main) {
   try {
     process.stdout.write(
       `${JSON.stringify(

@@ -17,11 +17,13 @@
  ------------------------------------------------------------------- */
 
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 // eslint-disable-next-line test/no-import-node-test -- This test exercises the bundled ESM script through Node's built-in runner.
 import test from "node:test";
+import { promisify } from "node:util";
 
 import { readSourcebookConfig as readBlogConfig } from "../skills/sourcebook-blog/scripts/read-config.mjs";
 import { readSourcebookConfig as readDocsConfig } from "../skills/sourcebook-docs/scripts/read-config.mjs";
@@ -216,4 +218,26 @@ test("blog reader rejects invalid blog configuration", async () => {
       await assert.rejects(readBlogConfig(root, "blog"));
     });
   }
+});
+
+test("reader prints the configuration when run through a symlinked skill directory", async () => {
+  await withWorkspace(
+    configFile({ docs: { type: "library", packages: "packages" } }),
+    async root => {
+      // Agents install skills into `.agents/skills` and link them from
+      // `.claude/skills`, so the script path in argv is not its real path.
+      await symlink(
+        resolve("skills/sourcebook-docs"),
+        join(root, "linked-skill"),
+        "dir"
+      );
+      const { stdout } = await promisify(execFile)(process.execPath, [
+        join(root, "linked-skill/scripts/read-config.mjs"),
+        root,
+        "docs"
+      ]);
+
+      assert.equal(JSON.parse(stdout).config.docs.packages, "packages");
+    }
+  );
 });
