@@ -1,6 +1,6 @@
 {
   "name": "@sourcebook/config",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "type": "module",
   "private": false,
   "description": "Configuration types and helpers for the Sourcebook skill",
