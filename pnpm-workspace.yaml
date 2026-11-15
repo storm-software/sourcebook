@@ -3,6 +3,10 @@ packages:
   - packages/*
   - docs/*
 catalog:
+  "@cyclone-ui/cli": ^0.6.71
+  "@cyclone-ui/helpers": 0.3.81
+  "@cyclone-ui/state": 0.0.83
+  "@cyclone-ui/tokens": ^0.3.68
   "@ls-lint/ls-lint": ^2.3.1
   "@nx/devkit": 23.1.1
   "@nx/eslint-plugin": 23.1.1
@@ -30,21 +34,54 @@ catalog:
   "@storm-software/tsdoc": ^0.13.301
   "@storm-software/untyped": ^0.24.291
   "@storm-software/workspace-tools": ^1.297.18
+  "@tamagui/adapt": 3.3.2
+  "@tamagui/animate-presence": 3.3.2
+  "@tamagui/constants": 3.3.2
+  "@tamagui/core": 3.3.2
+  "@tamagui/create-context": 3.3.2
+  "@tamagui/dialog": 3.3.2
+  "@tamagui/floating": 3.3.2
+  "@tamagui/get-font-sized": 3.3.2
+  "@tamagui/group": 3.3.2
+  "@tamagui/helpers": 3.3.2
+  "@tamagui/helpers-icon": 3.3.2
+  "@tamagui/helpers-tamagui": 3.3.2
+  "@tamagui/linear-gradient": 3.3.2
+  "@tamagui/popover": 3.3.2
+  "@tamagui/popper": 3.3.2
+  "@tamagui/react-native-svg": 3.3.2
+  "@tamagui/scroll-view": 3.3.2
+  "@tamagui/sheet": 3.3.2
+  "@tamagui/stacks": 3.3.2
+  "@tamagui/tabs": 3.3.2
+  "@tamagui/text": 3.3.2
+  "@tamagui/tooltip": 3.3.2
+  "@tamagui/web": 3.3.2
   "@types/hast": ^3.0.5
   "@types/mdast": ^4.0.4
   "@types/node": ^25.9.9
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
   "@typescript/native-preview": 7.0.0-dev.20251218.3
   copyfiles: ^2.4.1
   eslint: ^10.12.0
   github-slugger: ^2.0.0
+  hast-util-from-html: ^2.0.3
+  hast-util-to-jsx-runtime: ^2.3.6
   hast-util-to-string: ^3.0.1
   lefthook: ^1.13.6
   log4brains: ^1.1.0
   markdownlint-cli2: 0.17.2
   mdast-util-to-string: ^4.0.0
+  motion: ^11.18.2
   nx: 23.1.1
   powerlines: ^0.47.214
   prettier: ^3.9.10
+  react: ^19.3.1
+  react-dom: ^19.3.1
+  react-native: ^0.87.1
+  react-native-svg: ^15.16.1
+  react-native-web: ^0.21.4
   rehype-stringify: ^10.0.1
   remark: ^15.0.1
   remark-gfm: ^4.0.1

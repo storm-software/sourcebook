@@ -26,5 +26,10 @@ export default defineConfig({
   tsdoc: {
     configFile: "@powerlines/tsdoc/recommended.json"
   },
-  ignores: ["node_modules", "dist", "skills/*/scripts"]
+  ignores: [
+    "node_modules",
+    "dist",
+    "skills/*/scripts",
+    "packages/ui/src/components"
+  ]
 });

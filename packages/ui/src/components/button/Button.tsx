@@ -1,0 +1,1409 @@
+"use client";
+
+import { BodyText } from "../body-text";
+import type { ContainerVariant } from "../container";
+import {
+  ContainerBackground,
+  containerShadows,
+  containerVariants
+} from "../container";
+import type { FormControlSize, TokenValue } from "@cyclone-ui/helpers";
+import {
+  formSizeVariants,
+  getButtonSized,
+  getFormFontSize,
+  getFormSizeToken,
+  getSized
+} from "@cyclone-ui/helpers";
+import type { ThemeableIconProps } from "../icons";
+import { ThemeableIcon } from "../icons";
+import type { RippleAnimationHandle } from "../ripple-animation";
+import { RippleAnimation } from "../ripple-animation";
+import { Tooltip } from "../tooltip";
+import type {
+  ColorTokens,
+  GetProps,
+  SizeTokens,
+  ThemeName,
+  UnionableNumber,
+  UnionableString,
+  Variable
+} from "@tamagui/core";
+import {
+  createStyledContext,
+  createStyledHOC,
+  styled,
+  Text,
+  useMedia,
+  useThemeName,
+  View
+} from "@tamagui/core";
+import { withStaticProperties } from "@tamagui/helpers";
+import { YStack } from "@tamagui/stacks";
+import type { TextContextStyles, TextParentStyles } from "@tamagui/text";
+import type { Ref } from "react";
+import { isValidElement, useCallback, useMemo, useRef } from "react";
+
+type ButtonCascadeEffect =
+  | "cascade"
+  | "double-cascade"
+  | "cascade-top"
+  | "cascade-left"
+  | "cascade-bottom"
+  | "cascade-right"
+  | "diagonal-cascade"
+  | "double-diagonal-cascade"
+  | "diagonal-cascade-top"
+  | "diagonal-cascade-left"
+  | "diagonal-cascade-bottom"
+  | "diagonal-cascade-right";
+
+type ButtonReverseCascadeVariant = `reverse-${ButtonCascadeEffect}`;
+
+type ButtonCascadeVariant = ButtonCascadeEffect | ButtonReverseCascadeVariant;
+
+type ButtonVariant = ContainerVariant | ButtonCascadeVariant | "ghost" | "link";
+
+// The variants whose fill and border are drawn by a `Container` layer.
+const isContainerVariant = (
+  variant: ButtonVariant | undefined
+): variant is ContainerVariant =>
+  variant !== undefined && Object.hasOwn(containerVariants, variant);
+
+// The container variants with a neutral surface fill, where content keeps the
+// `primary` color.
+const isSurfaceVariant = (variant: ButtonVariant | undefined) =>
+  variant === "tertiary" ||
+  variant === "sunken" ||
+  variant === "canvas" ||
+  variant === "surface" ||
+  variant === "elevated" ||
+  variant === "floating";
+
+const isCascadeVariant = (
+  variant: ButtonVariant | undefined
+): variant is ButtonCascadeVariant => variant?.includes("cascade") ?? false;
+
+const isReverseCascadeVariant = (
+  variant: ButtonVariant | undefined
+): variant is ButtonReverseCascadeVariant =>
+  variant?.startsWith("reverse-") ?? false;
+
+const getCascadeEffect = (variant: ButtonCascadeVariant): ButtonCascadeEffect =>
+  (isReverseCascadeVariant(variant)
+    ? variant.slice("reverse-".length)
+    : variant) as ButtonCascadeEffect;
+
+const cascadeHoverStyle = {
+  cascade: { left: 0 },
+  "double-cascade": { left: 0 },
+  "cascade-left": { left: 0 },
+  "cascade-top": { top: 0 },
+  "cascade-bottom": { bottom: 0 },
+  "cascade-right": { right: 0 },
+  "diagonal-cascade": { left: 0 },
+  "double-diagonal-cascade": { left: 0 },
+  "diagonal-cascade-left": { left: 0 },
+  "diagonal-cascade-top": { top: 0 },
+  "diagonal-cascade-bottom": { bottom: 0 },
+  "diagonal-cascade-right": { right: 0 }
+} as const;
+
+const cascadeInitialStyle = {
+  cascade: { left: "-100%" },
+  "double-cascade": { left: "-100%" },
+  "cascade-left": { left: "-100%" },
+  "cascade-top": { top: "-100%" },
+  "cascade-bottom": { bottom: "-100%" },
+  "cascade-right": { right: "-100%" },
+  "diagonal-cascade": { left: "-125%" },
+  "double-diagonal-cascade": { left: "-125%" },
+  "diagonal-cascade-left": { left: "-125%" },
+  "diagonal-cascade-top": { top: "-400%" },
+  "diagonal-cascade-bottom": { bottom: "-400%" },
+  "diagonal-cascade-right": { right: "-125%" }
+} as const;
+
+const doubleCascadeEffect = {
+  "double-cascade": "cascade",
+  "double-diagonal-cascade": "diagonal-cascade"
+} as const;
+
+const isDoubleCascadeVariant = (
+  variant: ButtonCascadeEffect
+): variant is keyof typeof doubleCascadeEffect =>
+  variant in doubleCascadeEffect;
+
+const cascadeFrameStyle = {
+  backgroundColor: "transparent hover:transparent press:transparent",
+  borderWidth: "3px hover:1px press:1px",
+  borderColor: "primary hover:primary press:primary-active"
+} as const;
+
+const reverseCascadeFrameStyle = {
+  backgroundColor: "primary hover:transparent press:transparent",
+  borderWidth: "1px hover:3px press:3px",
+  borderColor: "primary hover:primary press:primary-active"
+} as const;
+
+type BorderRadiusSizeTokens =
+  | number
+  | `$${string}`
+  | `$${number}`
+  | "unset"
+  | `$${string}.${string}`
+  | `$${string}.${number}`
+  | UnionableNumber
+  | UnionableString
+  | Variable<any>
+  | any
+  | undefined;
+
+export type ButtonSize = FormControlSize | SizeTokens;
+
+const isFormControlSize = (value: unknown): value is FormControlSize =>
+  value === "sm" || value === "md" || value === "lg";
+
+/** Map a named `sm` / `md` / `lg` size onto its control size token. */
+const resolveSizeToken = (size: ButtonSize | undefined) =>
+  isFormControlSize(size) ? getFormSizeToken(size) : size;
+
+export type ButtonContextProps = TextContextStyles & {
+  /**
+   * The size of the button: `sm`, `md` or `lg` (which also scale the text and
+   * icon), or a raw size token
+   *
+   * @defaultValue "md"
+   */
+  size: ButtonSize;
+
+  /**
+   * The variant style of the button
+   *
+   * @defaultValue "tertiary"
+   */
+  variant: ButtonVariant;
+
+  /**
+   * The radius of the button's border
+   *
+   * @defaultValue "button"
+   */
+  borderRadius?: BorderRadiusSizeTokens;
+
+  /**
+   * Override the font color of the button
+   */
+  color?: ColorTokens | string;
+
+  /**
+   * remove default styles
+   *
+   * @defaultValue false
+   */
+  unstyled: boolean;
+
+  /**
+   * Should the button have a circular shape
+   *
+   * @defaultValue false
+   */
+  circular: boolean;
+
+  /**
+   * Should the button's left and right sides be fully rounded
+   *
+   * @defaultValue false
+   */
+  rounded: boolean;
+
+  /**
+   * Should the button have a ringed outline
+   *
+   * @defaultValue false
+   */
+  ringed: boolean;
+
+  /**
+   * Should the button be disabled
+   *
+   * @defaultValue false
+   */
+  disabled: boolean;
+
+  /**
+   * Should the default padding be removed
+   *
+   * @defaultValue false
+   */
+  tight: boolean;
+
+  /**
+   * Should the pressed, scale animation be applied
+   *
+   * @defaultValue true
+   */
+  animate: boolean;
+};
+
+type ButtonExtraProps = TextParentStyles & {
+  theme?: ThemeName | null;
+} & Partial<ButtonContextProps> & {
+    /**
+     * An alternate way to provide an onPress handler
+     */
+    onClick?: null | ((event?: any) => void);
+
+    /**
+     * The href to navigate to when the button is clicked
+     */
+    href?: string;
+
+    /**
+     * Should the button be a download link
+     */
+    download?: boolean;
+
+    /**
+     * The native `type` of the rendered `<button>`. Defaults to `"button"` so
+     * buttons inside a `<form>` (e.g. a password toggle) aren't treated as the
+     * form's default submit button; pass `"submit"` for the submit button.
+     *
+     * @defaultValue "button"
+     */
+    type?: "button" | "submit" | "reset";
+
+    /**
+     * The opacity of the ghost background when hovered
+     *
+     * @defaultValue 0.75
+     */
+    ghostOpacity?: number;
+
+    /**
+     * Short text describing what pressing the button does, e.g. "Close
+     * dialog". It shows in a `Tooltip` once the pointer rests on the button
+     * (or right away on keyboard focus), and labels the button for assistive
+     * tech when no `aria-label` is set.
+     */
+    tooltip?: string;
+
+    /**
+     * Turn a container variant's background into translucent frosted glass
+     *
+     * @defaultValue false
+     */
+    glass?: boolean;
+
+    /**
+     * Overlay a fine film grain on a container variant's background
+     *
+     * @defaultValue false
+     */
+    noise?: boolean;
+
+    /**
+     * Draw a container variant's border in the `primary` color
+     *
+     * @defaultValue false
+     */
+    accented?: boolean;
+  };
+
+export const ButtonContext = createStyledContext<
+  ButtonContextProps,
+  | "size"
+  | "variant"
+  | "borderRadius"
+  | "unstyled"
+  | "circular"
+  | "rounded"
+  | "ringed"
+  | "disabled"
+  | "tight"
+  | "animate"
+>(
+  {
+    // No `borderRadius` default: the Provider merges defaults into the value
+    // and `ButtonFrame` receives it as a call-site prop, which outranks the
+    // `circular` / `rounded` variants. `ButtonFrame`'s `.resolve` defaults it
+    // to "button".
+    size: "md",
+    variant: "tertiary",
+    unstyled: false,
+    circular: false,
+    rounded: false,
+    ringed: false,
+    disabled: false,
+    tight: false,
+    animate: true
+  } as ButtonContextProps,
+  {
+    keys: [
+      "size",
+      "variant",
+      "borderRadius",
+      "unstyled",
+      "circular",
+      "rounded",
+      "ringed",
+      "disabled",
+      "tight",
+      "animate"
+    ]
+  }
+);
+
+/**
+ * The background and border colors of a disabled button, or `undefined` to keep
+ * the variant's own (the surface container variants).
+ */
+const getDisabledColors = (variant: ButtonVariant | undefined) => {
+  if (variant === "tertiary") {
+    return disabledColors("surface", "primary-disabled");
+  } else if (variant === "secondary") {
+    return disabledColors("secondary-disabled", "hairlineInactive");
+  } else if (variant === "primary" || isReverseCascadeVariant(variant)) {
+    return disabledColors("secondary-disabled", "primary-disabled");
+  } else if (variant === "outlined" || isCascadeVariant(variant)) {
+    return disabledColors("transparent", "primary-disabled");
+  } else if (variant === "ghost" || variant === "link") {
+    return disabledColors("transparent", "transparent");
+  }
+
+  return undefined;
+};
+
+const disabledColors = (backgroundColor: string, borderColor: string) =>
+  ({ backgroundColor, borderColor }) as const;
+
+// The frame of a container variant stays clear: its `Container` layer draws
+// the fill and border.
+const containerFrameStyle = {
+  backgroundColor: "transparent",
+  borderWidth: 0
+} as const;
+
+const ButtonFrame = styled(View, {
+  displayName: "Button",
+  context: ButtonContext,
+  render: "button",
+  role: "button",
+  userSelect: "none",
+  transition: "400ms",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  display: "flex",
+  flexGrow: 1,
+  flexShrink: 0,
+  cursor: "pointer",
+  flexWrap: "nowrap",
+  flexDirection: "row",
+  overflow: "hidden",
+  // No base `borderRadius`: a base style authored here replaces the
+  // `circular` / `rounded` variant output (same base tier). The `.resolve`
+  // below supplies the default "button" radius instead.
+  minWidth: "fit-content",
+  paddingHorizontal: "2xl",
+  boxShadow: "focus-visible:ring-offset",
+  // A stacking context, so the `Container` layer's negative `zIndex` paints
+  // above the frame but below in-flow children.
+  zIndex: 0,
+
+  // No `press:` background colors: a press draws a `ButtonRipple` from the
+  // press point instead.
+  variants: {
+    variant: {
+      primary: containerFrameStyle,
+      secondary: containerFrameStyle,
+      tertiary: containerFrameStyle,
+      outlined: containerFrameStyle,
+      sunken: containerFrameStyle,
+      canvas: containerFrameStyle,
+      surface: containerFrameStyle,
+      elevated: containerFrameStyle,
+      floating: containerFrameStyle,
+
+      cascade: cascadeFrameStyle,
+      "double-cascade": cascadeFrameStyle,
+      "cascade-top": cascadeFrameStyle,
+      "cascade-left": cascadeFrameStyle,
+      "cascade-bottom": cascadeFrameStyle,
+      "cascade-right": cascadeFrameStyle,
+      "diagonal-cascade": cascadeFrameStyle,
+      "double-diagonal-cascade": cascadeFrameStyle,
+      "diagonal-cascade-top": cascadeFrameStyle,
+      "diagonal-cascade-left": cascadeFrameStyle,
+      "diagonal-cascade-bottom": cascadeFrameStyle,
+      "diagonal-cascade-right": cascadeFrameStyle,
+      "reverse-cascade": reverseCascadeFrameStyle,
+      "reverse-double-cascade": reverseCascadeFrameStyle,
+      "reverse-cascade-top": reverseCascadeFrameStyle,
+      "reverse-cascade-left": reverseCascadeFrameStyle,
+      "reverse-cascade-bottom": reverseCascadeFrameStyle,
+      "reverse-cascade-right": reverseCascadeFrameStyle,
+      "reverse-diagonal-cascade": reverseCascadeFrameStyle,
+      "reverse-double-diagonal-cascade": reverseCascadeFrameStyle,
+      "reverse-diagonal-cascade-top": reverseCascadeFrameStyle,
+      "reverse-diagonal-cascade-left": reverseCascadeFrameStyle,
+      "reverse-diagonal-cascade-bottom": reverseCascadeFrameStyle,
+      "reverse-diagonal-cascade-right": reverseCascadeFrameStyle,
+
+      ghost: {
+        backgroundColor: "transparent hover:transparent press:transparent",
+        borderWidth: "0px hover:0px press:0px",
+        borderColor: "transparent hover:transparent press:transparent"
+      },
+
+      link: {
+        backgroundColor: "transparent hover:transparent press:transparent",
+        borderWidth: "0px hover:0px press:0px",
+        borderColor: "transparent hover:transparent press:transparent"
+      }
+    },
+
+    // Height/padding only. Avoid a `size` / `...size` variant — Tamagui (and its
+    // compiler) treat those as a width+height shorthand and clip the label.
+    // Styled by the `.resolve` below because the geometry depends on `circular`.
+    frameSize: styled.dynamic<SizeTokens | number | boolean>(),
+
+    // Styled by the `.resolve` below because the colors depend on `variant`.
+    disabled: styled.dynamic<boolean>(),
+
+    // The `Container` shadow styles. They sit on the frame, not the
+    // `Container` layer, which the frame's `overflow` would clip; the layer
+    // takes `flat` for its border.
+    shadowStyle: {
+      raised: {
+        boxShadow: `${containerShadows.raised} focus-visible:ring-offset`
+      },
+      elevated: {
+        boxShadow: `${containerShadows.elevated} focus-visible:ring-offset`
+      },
+      flat: {
+        boxShadow: `${containerShadows.flat} focus-visible:ring-offset`
+      },
+      none: {
+        boxShadow: `${containerShadows.none} focus-visible:ring-offset`
+      }
+    },
+
+    ringed: {
+      true: {
+        boxShadow: "hover:ring-offset press:ring-offset"
+      }
+    },
+
+    circular: {
+      true: {
+        borderRadius: 1000_000_000
+      }
+    },
+
+    rounded: {
+      true: {
+        borderRadius: 1000_000_000
+      }
+    },
+
+    tight: {
+      true: {
+        padding: 0
+      }
+    },
+
+    animate: {
+      // Keep a resting scale so the motion driver always has a transform to
+      // animate from and back to. A press-only value makes motion derive the
+      // missing "from" as `scale(0)` on press, and on release the transform is
+      // dropped instead of animated.
+      true: {
+        scale: "1 press:0.96"
+      },
+      false: {
+        scale: "1"
+      }
+    }
+  } as const,
+
+  defaultVariants: {
+    variant: "tertiary",
+    frameSize: "5xl",
+    disabled: false,
+    shadowStyle: "none",
+    ringed: false,
+    circular: false,
+    rounded: false,
+    tight: false,
+    animate: true
+  }
+}).resolve((props, env) => {
+  const frameSize = props.frameSize === true ? "10xl" : props.frameSize;
+  const sized = frameSize
+    ? getButtonSized(frameSize as TokenValue, env, Boolean(props.circular))
+    : undefined;
+
+  return {
+    ...sized,
+    // The resolved padding would otherwise override the `tight` variant.
+    paddingHorizontal: props.tight ? 0 : sized?.paddingHorizontal,
+    // A fixed space between an icon and its label at every size, instead of
+    // the sized gap (which matches the padding).
+    gap: props.circular ? 0 : "2xl",
+    // The `circular` and `rounded` variants own the radius when set.
+    borderRadius:
+      props.circular || props.rounded ? undefined : sized?.borderRadius,
+    // A circle keeps its square box instead of growing along the parent's
+    // main axis.
+    flexGrow: props.circular ? 0 : undefined,
+    ...(props.disabled && {
+      cursor: "not-allowed",
+      pointerEvents: "none",
+      // A container variant's colors are on its `Container` layer.
+      ...(!isContainerVariant(props.variant as ButtonVariant) &&
+        getDisabledColors(props.variant as ButtonVariant))
+    })
+  };
+});
+
+const ButtonTextFrame = styled(Text, {
+  displayName: "ButtonText",
+  context: ButtonContext,
+  render: "span",
+
+  transition: "400ms",
+  userSelect: "none",
+  borderRadius: 0,
+  cursor: "pointer",
+  textAlign: "center",
+  whiteSpace: "nowrap",
+  fontFamily: "display",
+  // The typography tokens only carry the family and leading.
+  fontSize: "sm",
+  fontWeight: "600",
+  lineHeight: "sm",
+  color: "hover:primary",
+  flexGrow: 0,
+  flexShrink: 0,
+  flexBasis: "auto",
+  minWidth: "fit-content",
+  zIndex: "20",
+  variants: {
+    // `md` keeps the font's default size and leading.
+    controlSize: formSizeVariants((size, env) => {
+      if (size === "md") {
+        return undefined;
+      }
+
+      const { fontSize, lineHeight } = getFormFontSize(size, env, "sm");
+
+      return { fontSize, lineHeight };
+    }),
+
+    variant: {
+      tertiary: {
+        color: "primary"
+      },
+
+      secondary: {
+        color: "on-primary"
+      },
+
+      primary: {
+        color: "on-primary"
+      },
+
+      outlined: {
+        color: "primary"
+      },
+
+      sunken: {
+        color: "primary"
+      },
+
+      canvas: {
+        color: "primary"
+      },
+
+      surface: {
+        color: "primary"
+      },
+
+      elevated: {
+        color: "primary"
+      },
+
+      floating: {
+        color: "primary"
+      },
+
+      cascade: {
+        color: "primary"
+      },
+
+      "double-cascade": {
+        color: "primary"
+      },
+
+      "cascade-top": {
+        color: "primary"
+      },
+
+      "cascade-left": {
+        color: "primary"
+      },
+
+      "cascade-bottom": {
+        color: "primary"
+      },
+
+      "cascade-right": {
+        color: "primary"
+      },
+
+      "diagonal-cascade": {
+        color: "primary"
+      },
+
+      "double-diagonal-cascade": {
+        color: "primary"
+      },
+
+      "diagonal-cascade-top": {
+        color: "primary"
+      },
+
+      "diagonal-cascade-left": {
+        color: "primary"
+      },
+
+      "diagonal-cascade-bottom": {
+        color: "primary"
+      },
+
+      "diagonal-cascade-right": {
+        color: "primary"
+      },
+
+      "reverse-cascade": {
+        color: "on-primary"
+      },
+
+      "reverse-double-cascade": {
+        color: "on-primary"
+      },
+
+      "reverse-cascade-top": {
+        color: "on-primary"
+      },
+
+      "reverse-cascade-left": {
+        color: "on-primary"
+      },
+
+      "reverse-cascade-bottom": {
+        color: "on-primary"
+      },
+
+      "reverse-cascade-right": {
+        color: "on-primary"
+      },
+
+      "reverse-diagonal-cascade": {
+        color: "on-primary"
+      },
+
+      "reverse-double-diagonal-cascade": {
+        color: "on-primary"
+      },
+
+      "reverse-diagonal-cascade-top": {
+        color: "on-primary"
+      },
+
+      "reverse-diagonal-cascade-left": {
+        color: "on-primary"
+      },
+
+      "reverse-diagonal-cascade-bottom": {
+        color: "on-primary"
+      },
+
+      "reverse-diagonal-cascade-right": {
+        color: "on-primary"
+      },
+
+      ghost: {
+        color: "primary"
+      },
+
+      link: {
+        color: "link",
+        textDecorationLine: "underline",
+        textDecorationColor: "link",
+        textDecorationStyle: "solid"
+      }
+    },
+
+    disabled: {
+      true: {
+        cursor: "not-allowed",
+        pointerEvents: "none",
+        color: "primary-disabled hover:primary-disabled press:primary-disabled",
+        textDecoration: "none hover:none press:none"
+      }
+    }
+  } as const,
+  defaultVariants: {
+    variant: "tertiary",
+    disabled: false
+  }
+});
+
+const colorForVariant = (
+  variant: ButtonVariant,
+  disabled: boolean,
+  color?: ColorTokens | string,
+  themeName?: string | null | undefined
+): ThemeableIconProps["color"] => {
+  if (
+    variant === "primary" ||
+    isReverseCascadeVariant(variant) ||
+    (variant === "secondary" && !themeName?.endsWith("base"))
+  ) {
+    return (
+      disabled ? "primary-disabled" : (color ?? "on-primary")
+    ) as ThemeableIconProps["color"];
+  }
+
+  if (variant === "ghost") {
+    return (
+      disabled
+        ? !themeName || themeName?.endsWith("base")
+          ? "subtle"
+          : "primary-disabled"
+        : (color ?? "primary")
+    ) as ThemeableIconProps["color"];
+  }
+
+  if (variant === "link") {
+    return (
+      disabled ? "link-disabled" : (color ?? "link")
+    ) as ThemeableIconProps["color"];
+  }
+
+  return (
+    disabled ? "primary-disabled" : (color ?? "primary")
+  ) as ThemeableIconProps["color"];
+};
+
+const hoverColorForVariant = (
+  variant: ButtonVariant,
+  disabled: boolean,
+  themeName?: string | null | undefined
+) => {
+  if (disabled) {
+    if (
+      variant === "primary" ||
+      (variant === "secondary" && !themeName?.endsWith("base"))
+    ) {
+      return "primary-disabled";
+    }
+
+    return "primary-disabled";
+  }
+
+  if (
+    isSurfaceVariant(variant) ||
+    variant === "ghost" ||
+    (variant === "secondary" && themeName?.endsWith("base")) ||
+    isReverseCascadeVariant(variant)
+  ) {
+    return "primary";
+  }
+
+  if (
+    variant === "primary" ||
+    variant === "secondary" ||
+    isCascadeVariant(variant)
+  ) {
+    return "on-primary";
+  }
+
+  if (variant === "link") {
+    return "link-hovered";
+  }
+
+  return "primary-hovered";
+};
+
+const pressedColorForVariant = (
+  variant: ButtonVariant,
+  disabled: boolean,
+  themeName?: string | null | undefined
+) => {
+  if (disabled) {
+    if (
+      variant === "primary" ||
+      (variant === "secondary" && !themeName?.endsWith("base"))
+    ) {
+      return "primary-disabled";
+    }
+
+    return "primary-disabled";
+  }
+
+  if (isReverseCascadeVariant(variant)) {
+    return "primary-active";
+  }
+
+  if (
+    variant === "primary" ||
+    variant === "secondary" ||
+    isCascadeVariant(variant)
+  ) {
+    return "on-primary";
+  }
+
+  if (variant === "link") {
+    return "link-active";
+  }
+
+  return "primary-active";
+};
+
+/** Join flat style values; later clauses win over earlier ones. */
+const joinFlatValues = (...values: unknown[]) =>
+  values.filter(value => value != null && value !== "").join(" ");
+
+const ButtonText = createStyledHOC(
+  ButtonTextFrame,
+  (
+    {
+      children,
+      size,
+      ...props
+    }: GetProps<typeof ButtonTextFrame> & { size?: ButtonSize },
+    forwardedRef
+  ) => {
+    const {
+      variant,
+      disabled,
+      color,
+      size: contextSize
+    } = ButtonContext.useStyledContext();
+    const controlSize = size ?? contextSize;
+    const theme = useThemeName();
+    const hoverColor = hoverColorForVariant(variant, disabled, theme);
+
+    return (
+      <ButtonTextFrame
+        ref={forwardedRef}
+        variant={variant}
+        disabled={disabled}
+        controlSize={isFormControlSize(controlSize) ? controlSize : undefined}
+        color={`${String(colorForVariant(variant, disabled, color, theme))} group-hover/button:${hoverColor}`}
+        {...props}
+        borderRadius={0}
+        textDecorationColor={`group-hover/button:${hoverColor}`}>
+        {children}
+      </ButtonTextFrame>
+    );
+  },
+  {
+    displayName: "ButtonText"
+  }
+);
+
+const ButtonIcon = createStyledHOC(
+  View,
+  (
+    {
+      children,
+      size,
+      color: colorProp,
+      ...props
+    }: GetProps<typeof View> & { size?: ButtonSize },
+    forwardedRef
+  ) => {
+    const {
+      variant,
+      disabled,
+      color,
+      size: contextSize
+    } = ButtonContext.useStyledContext();
+    const adjusted = useMemo(
+      () => getSized(resolveSizeToken(size ?? contextSize)!, { shift: -6 }),
+      [size, contextSize]
+    );
+    const groupColor = `group-hover/button:${hoverColorForVariant(
+      variant,
+      disabled
+    )} group-press/button:${pressedColorForVariant(variant, disabled)}`;
+
+    return (
+      <View
+        ref={forwardedRef}
+        zIndex="20"
+        alignItems="center"
+        flexGrow={0}
+        flexShrink={0}>
+        <ThemeableIcon
+          {...props}
+          disabled={disabled}
+          size={adjusted}
+          color={joinFlatValues(
+            colorForVariant(variant, disabled, color),
+            groupColor,
+            // Callers extend the icon color with their own flat clauses, e.g.
+            // `color="group-hover/button:hovered"`.
+            colorProp
+          )}>
+          {children}
+        </ThemeableIcon>
+      </View>
+    );
+  },
+  {
+    displayName: "ButtonIcon"
+  }
+);
+
+const ButtonHoverBackground = styled(YStack, {
+  displayName: "Button",
+  context: ButtonContext,
+  transition: "500ms",
+  zIndex: "10",
+  position: "absolute",
+  borderColor: "primary",
+  pointerEvents: "none",
+
+  variants: {
+    effect: {
+      ghost: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        opacity: 0,
+        backgroundColor: "secondary"
+      },
+
+      cascade: {
+        top: 0,
+        bottom: 0,
+        left: "-100%",
+        width: "100%",
+        opacity: 1,
+        backgroundColor: "primary"
+      },
+
+      "cascade-left": {
+        top: 0,
+        bottom: 0,
+        left: "-100%",
+        width: "100%",
+        opacity: 1,
+        backgroundColor: "primary"
+      },
+
+      "cascade-top": {
+        top: "-100%",
+        right: 0,
+        left: 0,
+        height: "100%",
+        opacity: 1,
+        backgroundColor: "primary"
+      },
+
+      "cascade-bottom": {
+        right: 0,
+        bottom: "-100%",
+        left: 0,
+        height: "100%",
+        opacity: 1,
+        backgroundColor: "primary"
+      },
+
+      "cascade-right": {
+        top: 0,
+        right: "-100%",
+        bottom: 0,
+        width: "100%",
+        opacity: 1,
+        backgroundColor: "primary"
+      },
+
+      "diagonal-cascade": {
+        top: 0,
+        bottom: 0,
+        left: "-125%",
+        width: "125%",
+        opacity: 1,
+        backgroundColor: "primary",
+        clipPath: "polygon(0 0, 80% 0, 100% 100%, 0 100%)"
+      },
+
+      "diagonal-cascade-left": {
+        top: 0,
+        bottom: 0,
+        left: "-125%",
+        width: "125%",
+        opacity: 1,
+        backgroundColor: "primary",
+        clipPath: "polygon(0 0, 80% 0, 100% 100%, 0 100%)"
+      },
+
+      "diagonal-cascade-top": {
+        top: "-400%",
+        right: 0,
+        left: 0,
+        height: "400%",
+        opacity: 1,
+        backgroundColor: "primary",
+        clipPath: "polygon(0 0, 100% 0, 100% 25%, 0 100%)"
+      },
+
+      "diagonal-cascade-bottom": {
+        right: 0,
+        bottom: "-400%",
+        left: 0,
+        height: "400%",
+        opacity: 1,
+        backgroundColor: "primary",
+        clipPath: "polygon(0 75%, 100% 0, 100% 100%, 0 100%)"
+      },
+
+      "diagonal-cascade-right": {
+        top: 0,
+        right: "-125%",
+        bottom: 0,
+        width: "125%",
+        opacity: 1,
+        backgroundColor: "primary",
+        clipPath: "polygon(20% 0, 100% 0, 100% 100%, 0 100%)"
+      }
+    },
+
+    slow: {
+      true: {
+        transition: "1s"
+      }
+    },
+
+    circular: {
+      true: {
+        borderRadius: 1000_000_000
+      }
+    },
+
+    rounded: {
+      true: {
+        borderRadius: 1000_000_000
+      }
+    }
+  } as const,
+  defaultVariants: {
+    effect: "ghost",
+    slow: false,
+    circular: false,
+    rounded: false
+  }
+});
+
+/**
+ * Cascade layers stay square regardless of the frame's radius — the frame's
+ * `overflow: hidden` clips them to its shape. Explicit props win over the
+ * `borderRadius`, `circular`, and `rounded` values inherited from context.
+ */
+const cascadeBackgroundShape = {
+  circular: false,
+  rounded: false,
+  borderRadius: 0
+} as const;
+
+type ButtonPressEvent = Parameters<
+  NonNullable<GetProps<typeof View>["onPress"]>
+>[0];
+
+type CascadePosition = Partial<
+  Record<"top" | "right" | "bottom" | "left", number | string>
+>;
+
+/**
+ * Combine a cascade layer's resting offset with the offset it slides to while
+ * the button group is hovered.
+ */
+const getCascadePositionStyle = (
+  base: CascadePosition | undefined,
+  hover: CascadePosition | undefined
+) => {
+  const style: Record<string, string> = {};
+  for (const [key, value] of Object.entries(base ?? {})) {
+    style[key] = String(value);
+  }
+  for (const [key, value] of Object.entries(hover ?? {})) {
+    style[key] = joinFlatValues(style[key], `group-hover/button:${value}`);
+  }
+
+  return style as Record<keyof CascadePosition, string>;
+};
+
+/**
+ * The press ripple, in the label's hover color: a pointer press lands on the
+ * hovered button, so it stays visible on hover backgrounds and cascade fills.
+ * Reads the theme inside the frame, which a `theme` prop can change.
+ */
+const ButtonRipple = ({ ref }: { ref: Ref<RippleAnimationHandle> }) => {
+  const { variant, disabled } = ButtonContext.useStyledContext();
+  const theme = useThemeName();
+
+  return (
+    <RippleAnimation
+      ref={ref}
+      // Above the ghost and cascade layers ("10" = 100), below the label and
+      // icon ("20" = 200).
+      zIndex={150}
+      color={hoverColorForVariant(variant, disabled, theme)}
+    />
+  );
+};
+
+/** How long the pointer rests on a button before its `tooltip` shows. */
+const TOOLTIP_DELAY = { open: 2000 };
+
+export type ButtonProps = ButtonExtraProps &
+  Omit<GetProps<typeof ButtonFrame>, "frameSize" | "size">;
+
+const ButtonContainerImpl = createStyledHOC(
+  ButtonFrame,
+  (
+    {
+      variant = "tertiary",
+      size = "md",
+      disabled = false,
+      circular = false,
+      rounded = false,
+      tight = false,
+      ringed = false,
+      animate = true,
+      children,
+      onPress,
+      onClick,
+      render,
+      href,
+      download,
+      type = "button",
+      ghostOpacity = 0.75,
+      tooltip,
+      glass = false,
+      noise = false,
+      accented = false,
+      shadowStyle = "none",
+      ...props
+    }: GetProps<typeof ButtonFrame> & ButtonProps,
+    forwardedRef
+  ) => {
+    const rippleRef = useRef<RippleAnimationHandle>(null);
+    // Touch screens (a coarse primary pointer) never show the `tooltip`: a tap
+    // would leave it stuck open.
+    const touchable = useMedia().touchable ?? false;
+
+    const handlePress = useCallback(
+      (event: ButtonPressEvent) => {
+        // A link render (`"a"` or an element such as Next's `<Link>`) must keep the
+        // click's default, which `Link` checks before it navigates client-side.
+        // So must a `submit` or `reset` button, whose default submits or resets
+        // its form.
+        if (render !== "a" && !isValidElement(render) && type === "button") {
+          event.preventDefault();
+        }
+        event.stopPropagation();
+
+        if (!disabled) {
+          rippleRef.current?.ripple(event);
+          if (onPress) {
+            onPress?.(event);
+          }
+          if (onClick) {
+            onClick?.(event);
+          }
+        }
+      },
+      [disabled, onPress, onClick, render, type]
+    );
+
+    const cascadeState = isCascadeVariant(variant)
+      ? {
+          effect: getCascadeEffect(variant),
+          reverse: isReverseCascadeVariant(variant)
+        }
+      : undefined;
+
+    const frame = (
+      <ButtonFrame
+        group={"button"}
+        ref={forwardedRef}
+        render={render}
+        // Tamagui v3 no longer types `href` on View; it still reaches the
+        // rendered `<a>` element when `render="a"`.
+        {...({ href } as object)}
+        download={download}
+        // Untyped on View too; only meaningful on the default `<button>` render.
+        {...(render === undefined || render === "button"
+          ? ({ type } as object)
+          : {})}
+        // Before `{...props}`: Tamagui applies props in order, so the variant's
+        // `padding: 0` would otherwise override explicit padding props.
+        tight={tight}
+        {...props}
+        aria-label={props["aria-label"] ?? tooltip}
+        onPress={handlePress}
+        frameSize={resolveSizeToken(size)}
+        circular={circular}
+        rounded={rounded}
+        variant={variant}
+        disabled={disabled}
+        shadowStyle={shadowStyle}
+        ringed={ringed}
+        animate={animate}
+        width={circular ? undefined : props.width}>
+        {isContainerVariant(variant) && (
+          <ContainerBackground
+            variant={variant}
+            shadowStyle={shadowStyle}
+            transition="400ms"
+            glass={glass}
+            noise={noise}
+            accented={accented}
+            hoverGroup={disabled ? undefined : "button"}
+            {...(disabled
+              ? getDisabledColors(variant)
+              : variant === "outlined" && {
+                  borderColor:
+                    "primary group-hover/button:primary-hovered group-press/button:primary-active"
+                })}
+          />
+        )}
+        {variant === "ghost" && (
+          <ButtonHoverBackground
+            effect="ghost"
+            circular={circular}
+            rounded={rounded}
+            position="absolute"
+            width="100%"
+            opacity={`group-hover/button:${disabled ? 0 : ghostOpacity}`}
+          />
+        )}
+        {cascadeState && (
+          <>
+            {isDoubleCascadeVariant(cascadeState.effect) && (
+              <ButtonHoverBackground
+                effect={doubleCascadeEffect[cascadeState.effect]}
+                {...cascadeBackgroundShape}
+                backgroundColor="secondary"
+                {...getCascadePositionStyle(
+                  cascadeState.reverse
+                    ? cascadeHoverStyle[
+                        doubleCascadeEffect[cascadeState.effect]
+                      ]
+                    : undefined,
+                  disabled
+                    ? undefined
+                    : cascadeState.reverse
+                      ? cascadeInitialStyle[
+                          doubleCascadeEffect[cascadeState.effect]
+                        ]
+                      : { left: 0 }
+                )}
+                slow
+              />
+            )}
+            <ButtonHoverBackground
+              effect={
+                isDoubleCascadeVariant(cascadeState.effect)
+                  ? doubleCascadeEffect[cascadeState.effect]
+                  : cascadeState.effect
+              }
+              {...cascadeBackgroundShape}
+              {...getCascadePositionStyle(
+                cascadeState.reverse
+                  ? cascadeHoverStyle[cascadeState.effect]
+                  : isDoubleCascadeVariant(cascadeState.effect)
+                    ? { left: "-171.875%" }
+                    : undefined,
+                disabled
+                  ? undefined
+                  : cascadeState.reverse
+                    ? cascadeInitialStyle[cascadeState.effect]
+                    : cascadeHoverStyle[cascadeState.effect]
+              )}
+              slow={isDoubleCascadeVariant(cascadeState.effect)}
+            />
+          </>
+        )}
+        {variant !== "link" && <ButtonRipple ref={rippleRef} />}
+        {children}
+      </ButtonFrame>
+    );
+
+    return (
+      <ButtonContext.Provider
+        // Only context keys: a styled context treats every key in its value
+        // as a context prop, so spreading all props swallowed `aria-*` and
+        // other DOM attributes before they reached the element.
+        {...(props.borderRadius === undefined
+          ? null
+          : { borderRadius: props.borderRadius })}
+        {...(props.unstyled === undefined
+          ? null
+          : { unstyled: props.unstyled })}
+        variant={variant}
+        size={size}
+        disabled={disabled}
+        circular={circular}
+        rounded={rounded}
+        tight={tight}
+        ringed={ringed}
+        animate={animate}>
+        {tooltip ? (
+          <Tooltip
+            delay={TOOLTIP_DELAY}
+            // Held closed rather than unmounted, so the button doesn't remount
+            // when `touchable` settles after the first render.
+            open={touchable ? false : undefined}
+            placement="top">
+            {/* The trigger marks its child `aria-expanded`, but the button
+                doesn't expand anything. A wrapping Popover/Dialog trigger's
+                own `aria-expanded` still reaches the frame. */}
+            <Tooltip.Trigger asChild={true} aria-expanded={undefined}>
+              {frame}
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+              <View paddingVertical="2xl" paddingHorizontal="3xl">
+                <BodyText>{tooltip}</BodyText>
+              </View>
+            </Tooltip.Content>
+          </Tooltip>
+        ) : (
+          frame
+        )}
+      </ButtonContext.Provider>
+    );
+  },
+  {
+    displayName: "Button"
+  }
+);
+
+export const Button = withStaticProperties(ButtonContainerImpl, {
+  Text: ButtonText,
+  Icon: ButtonIcon
+});
+
+/**
+ * Flat named exports for React Server Components, which cannot dot into a
+ * client module (`Button.Text` is undefined on the server).
+ */
+export { ButtonIcon, ButtonText };
