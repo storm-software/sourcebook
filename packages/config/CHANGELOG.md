@@ -2,6 +2,16 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.14](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.14) (11/15/2026)
+
+### Bug Fixes
+
+- **monorepo:** Update workflow actions to latest versions ([6f5c766](https://github.com/storm-software/sourcebook/commit/6f5c766))
+
+### Features
+
+- **core:** Added support for `story` files and added the `sourcebook-story` agent skill ([8e5b447](https://github.com/storm-software/sourcebook/commit/8e5b447))
+
 ## [0.0.12](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.12) (10/21/2026)
 
 ### Features
