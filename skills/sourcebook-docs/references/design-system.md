@@ -60,6 +60,8 @@ Provide a gallery with visible previews, public names, and links to source asset
 
 Describe purpose, anatomy, public props or inputs, variants, and interaction states. Show realistic examples, including disabled, loading, error, or focus states when supported. Record keyboard and screen-reader behavior from the implementation or tests, and link to the tokens that control its appearance.
 
+When a component has a Fumadocs Story file (`*.story.tsx`), `sourcebook-story` owns its page: `@sourcebook/core` generates the page from the story's TSDoc. Do not write a second page for it. Put new guidance in the story's TSDoc instead.
+
 ## Blocks and layouts
 
 Explain the composition, required content, and where the pattern fits. Show how it adapts to different content lengths and viewport sizes when supported. Link to constituent components and document only block- or layout-specific variants and states; keep shared component details on their own pages.

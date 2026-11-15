@@ -105,6 +105,13 @@ export interface CompileDocumentationPageOptions {
   path?: string;
 
   /**
+   * Parse the source as Markdown or MDX.
+   *
+   * @defaultValue `mdx` when `path` ends in `.mdx`, otherwise `md`
+   */
+  format?: "md" | "mdx";
+
+  /**
    * Throw when a required field is missing or invalid.
    *
    * @defaultValue true
@@ -190,4 +197,74 @@ export interface DocumentationPage {
    * Fields that were present but not usable.
    */
   invalidFields: InvalidDocumentationField[];
+}
+
+/**
+ * One entry of a story's `args` array.
+ */
+export interface ComponentStoryVariant {
+  /**
+   * The `variant` name shown in the story panel.
+   */
+  name: string;
+
+  /**
+   * Source text of the `fixed` props, when the variant sets them.
+   */
+  fixed?: string;
+}
+
+/**
+ * Documentation read from a Fumadocs Story file (`*.story.tsx`).
+ */
+export interface ComponentStory {
+  /**
+   * Story file path passed to the parser.
+   */
+  path: string;
+
+  /**
+   * Name of the exported story, such as `story`.
+   */
+  exportName: string;
+
+  /**
+   * Source text of the `Component` option, such as `Callout`.
+   */
+  name: string;
+
+  /**
+   * Page slug from the file name: `Callout.story.tsx` becomes `callout`.
+   */
+  slug: string;
+
+  /**
+   * First paragraph of the TSDoc summary, on one line.
+   */
+  description: string;
+
+  /**
+   * Full TSDoc summary, as Markdown.
+   */
+  overview: string;
+
+  /**
+   * Markdown from the `@anatomy` tag.
+   */
+  anatomy?: string;
+
+  /**
+   * Markdown from the `@usage` tag.
+   */
+  usage?: string;
+
+  /**
+   * Markdown from each `@example` tag. Unfenced examples are fenced as `tsx`.
+   */
+  examples: string[];
+
+  /**
+   * Named variants from an `args` array.
+   */
+  variants: ComponentStoryVariant[];
 }

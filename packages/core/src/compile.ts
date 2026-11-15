@@ -21,6 +21,7 @@ import { slug as toSlug } from "github-slugger";
 import rehypeStringify from "rehype-stringify";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
+import remarkMdx from "remark-mdx";
 import remarkRehype from "remark-rehype";
 import type { PluggableList, Processor } from "unified";
 import { DocumentationPageError } from "./errors.js";
@@ -33,6 +34,7 @@ import { splitFrontmatter } from "./frontmatter.js";
 import { rehypeToc } from "./plugins/rehype-toc.js";
 import { remarkAdmonition } from "./plugins/remark-admonition.js";
 import { remarkHeading } from "./plugins/remark-heading.js";
+import { remarkMdxHtml } from "./plugins/remark-mdx-html.js";
 import { remarkStructure } from "./plugins/remark-structure.js";
 import type {
   CompileDocumentationPageOptions,
@@ -104,6 +106,8 @@ function formatPageError(
  * Remark applies GitHub Flavored Markdown, admonitions, heading ids, and searchable structure.
  * Rehype renders an HTML fragment and collects the table of contents.
  * Raw HTML in the Markdown is preserved, so compile only trusted source.
+ * MDX (`format: "mdx"`, or a `.mdx` path) drops imports, exports, and `{expressions}` from the HTML.
+ * JSX components become placeholder elements that keep their children.
  *
  * `remarkPlugins` run after admonitions and before heading ids are assigned.
  * `rehypePlugins` run before the table of contents is read from the HTML.
@@ -126,8 +130,12 @@ export function compileDocumentationPage(
     frontmatter,
     options.path
   );
+  const mdx =
+    (options.format ?? (/\.mdx$/i.test(options.path ?? "") ? "mdx" : "md")) ===
+    "mdx";
   const processor = remark() as unknown as Processor;
   processor.use(remarkGfm);
+  if (mdx) processor.use(remarkMdx).use(remarkMdxHtml);
   processor.use(remarkAdmonition);
   applyPlugins(processor, options.remarkPlugins);
   processor.use(remarkHeading);
@@ -137,9 +145,19 @@ export function compileDocumentationPage(
   processor.use(rehypeToc);
   processor.use(rehypeStringify, { allowDangerousHtml: true });
 
-  const file = processor.processSync(
-    options.path ? { path: options.path, value: body } : body
-  );
+  let file: ReturnType<Processor["processSync"]>;
+  try {
+    file = processor.processSync(
+      options.path ? { path: options.path, value: body } : body
+    );
+  } catch (error) {
+    if (!mdx) throw error;
+    const where = options.path ? ` in ${options.path}` : "";
+    const detail = error instanceof Error ? error.message : String(error);
+    throw new DocumentationPageError(`Invalid MDX${where}: ${detail}`, {
+      path: options.path
+    });
+  }
   const structuredData = file.data.documentationStructuredData ?? {
     headings: [],
     contents: []

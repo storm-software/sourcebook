@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
-  "description": "Compile Sourcebook Markdown into documentation pages",
+  "description": "Compile Sourcebook Markdown into documentation pages and generate component catalogs from story files",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -25,7 +25,9 @@
     "rehype-stringify": "catalog:",
     "remark": "catalog:",
     "remark-gfm": "catalog:",
+    "remark-mdx": "catalog:",
     "remark-rehype": "catalog:",
+    "typescript": "^6.0.3",
     "unified": "catalog:",
     "vfile": "catalog:",
     "yaml": "catalog:"

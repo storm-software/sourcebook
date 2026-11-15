@@ -20,12 +20,12 @@ import {
   documentationMarkdownInstructions,
   documentationPageRequirements
 } from "@sourcebook/config";
+import type { Root } from "mdast";
 import { readFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { Root } from "mdast";
 import type { Plugin } from "unified";
 import { describe, expect, it } from "vitest";
 
@@ -131,11 +131,13 @@ const value = 1;
       "#details",
       "#extra"
     ]);
-    expect(page.structuredData.headings.map(heading => heading.content)).toContain(
-      "Details"
-    );
     expect(
-      page.structuredData.contents.some(content => content.content.includes("Node is required"))
+      page.structuredData.headings.map(heading => heading.content)
+    ).toContain("Details");
+    expect(
+      page.structuredData.contents.some(content =>
+        content.content.includes("Node is required")
+      )
     ).toBe(true);
   });
 
@@ -299,7 +301,10 @@ We picked one.
       "adr/partial.md"
     );
     expect(error.missingFields).toEqual(["Considered Options"]);
-    expect(error.invalidFields.map(field => field.name)).toEqual(["status", "date"]);
+    expect(error.invalidFields.map(field => field.name)).toEqual([
+      "status",
+      "date"
+    ]);
   });
 
   it("compiles a README from its sections and accepted aliases", () => {
@@ -407,6 +412,51 @@ The page starts here.
 
     expect(page.html).toContain("From a plugin");
     expect(page.toc.map(item => item.title)).toContain("From a plugin");
+  });
+
+  it("parses an .mdx page as MDX and keeps only renderable content", () => {
+    const page = compileDocumentationPage(
+      `---
+title: Button
+description: Starts an action.
+documentType: reference
+---
+
+import { story } from "./button.story";
+export const meta = { hidden: true };
+
+{/* A generated-page comment. */}
+
+# Button
+
+Press it {1 + 1} times.
+
+<story.WithControl />
+
+<Callout type="warning">
+Keep the label short.
+</Callout>
+
+<div className="demo" hidden>Inline</div>
+`,
+      { path: "components/button.mdx" }
+    );
+
+    expect(page.html).not.toMatch(/import|export|comment|1 \+ 1/);
+    expect(page.html).toContain(
+      '<div data-mdx-component="story.WithControl"></div>'
+    );
+    expect(page.html).toContain('<div data-mdx-component="Callout">');
+    expect(page.html).toContain('<div class="demo" hidden>Inline</div>');
+    expect(
+      page.structuredData.contents.map(content => content.content)
+    ).toContain("Keep the label short.");
+
+    expect(() =>
+      compileDocumentationPage("# Broken\n\n<!-- html comment -->\n", {
+        format: "mdx"
+      })
+    ).toThrow(/Invalid MDX/);
   });
 
   it("uses an index file and a guide directory as the slug and kind", () => {

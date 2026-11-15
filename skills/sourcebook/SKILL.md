@@ -1,6 +1,6 @@
 ---
 name: sourcebook
-description: Runs a workspace documentation pass by following the sourcebook-docs, sourcebook-guide, sourcebook-openapi, sourcebook-readme, and sourcebook-editor skills one at a time. Use when a schedule or the user asks to document a repository that has never been through Sourcebook, or to update Markdown docs, guides, OpenAPI descriptions, and READMEs after code changes. Not for a single README, one guide, one spec, a blog post, an ADR, or a review of one page.
+description: Runs a workspace documentation pass by following the sourcebook-story, sourcebook-docs, sourcebook-guide, sourcebook-openapi, sourcebook-readme, and sourcebook-editor skills one at a time. Use when a schedule or the user asks to document a repository that has never been through Sourcebook, or to update component stories and their catalog, Markdown docs, guides, OpenAPI descriptions, and READMEs after code changes. Not for a single README, one guide, one spec, a blog post, an ADR, or a review of one page.
 argument-hint: "[first|update] [baseline git ref]"
 license: Apache-2.0
 metadata:
@@ -12,11 +12,11 @@ metadata:
 
 Run one documentation pass over the workspace. Do the work by reading each skill below and following that skill, in order, one at a time. Finish the current skill and note what it wrote before starting the next. Follow the loaded skill when it is already available; otherwise read the sibling file.
 
-These files must sit next to this skill: `../sourcebook-docs/SKILL.md`, `../sourcebook-guide/SKILL.md`, `../sourcebook-openapi/SKILL.md`, `../sourcebook-readme/SKILL.md`, `../sourcebook-editor/SKILL.md`. If one is missing, stop and name it.
+These files must sit next to this skill: `../sourcebook-story/SKILL.md`, `../sourcebook-docs/SKILL.md`, `../sourcebook-guide/SKILL.md`, `../sourcebook-openapi/SKILL.md`, `../sourcebook-readme/SKILL.md`, `../sourcebook-editor/SKILL.md`. If one is missing, stop and name it.
 
 This skill does not run `sourcebook-blog` or `sourcebook-adr`.
 
-Write documentation only. Leave application source, generated specs, and tool-owned sections unchanged.
+Write documentation only. Story files (`*.story.{js,jsx,ts,tsx}`) and the catalog pages generated from them count as documentation. Leave application source, generated specs, and tool-owned sections unchanged.
 
 ## 1. Classify the run
 
@@ -33,11 +33,11 @@ If the recorded sha is not in this clone, say so and do a first run.
 
 ## 2. Build the work list
 
-On an update run, diff that baseline to the working tree, including staged, unstaged, and untracked files. Keep source, tests, and project manifests. Ignore documentation output, `README.md`, `guide/` and `guides/` files, OpenAPI and Swagger files, lockfiles, `.sourcebook-version`, and dependency or build directories (`node_modules`, `dist`, `build`, `out`, `coverage`, `vendor`, `.git`).
+On an update run, diff that baseline to the working tree, including staged, unstaged, and untracked files. Keep source, tests, and project manifests. Ignore documentation output, story files, `README.md`, `guide/` and `guides/` files, OpenAPI and Swagger files, lockfiles, `.sourcebook-version`, and dependency or build directories (`node_modules`, `dist`, `build`, `out`, `coverage`, `vendor`, `.git`).
 
 If that code diff is empty, write the current `HEAD` sha into `.sourcebook-version` when it differs, report that there is nothing to document, and stop.
 
-On a first run, the work list is the workspace. `sourcebook-docs` needs `sourcebook.config.*` and `node`. If its reader fails, record the error, skip that skill, and continue with the others.
+On a first run, the work list is the workspace. `sourcebook-story` and `sourcebook-docs` read `sourcebook.config.*` with `node`. If the reader fails, record the error, skip both skills, and continue with the others.
 
 Carry the mode, baseline, and code-change list into every skill. On a conflict about one of its files, that skill's rules win.
 
@@ -45,12 +45,23 @@ Carry the mode, baseline, and code-change list into every skill. On a conflict a
 
 Copy this list and complete it in order:
 
+- [ ] sourcebook-story
 - [ ] sourcebook-docs
 - [ ] sourcebook-guide
 - [ ] sourcebook-openapi
 - [ ] sourcebook-readme
 - [ ] sourcebook-editor
 - [ ] `.sourcebook-version`
+
+### sourcebook-story
+
+Read `../sourcebook-story/SKILL.md` and follow it. Run it before `sourcebook-docs`, so that skill sees which components already have a generated page. This request is the confirmation to write story files and generate the catalog. Do not ask the user.
+
+- **Skip** this skill when the reader returns no `design-system` entry and the workspace has no story file, or when the skill finds no story factory. Report the setup steps that it lists. A skip is a finished step.
+- **First run:** write a story for each exported component, block, and layout that lacks one. Then generate the catalog.
+- **Update run:** add or update a story when a listed code change adds a component or changes its props, parts, variants, or behavior. Delete a story and its generated page when the component is gone, and say so. Then generate the catalog.
+
+If the catalog command stops because of a hand-written page, leave that page, report it, and continue.
 
 ### sourcebook-docs
 
@@ -95,10 +106,10 @@ Read `../sourcebook-readme/SKILL.md` and follow it.
 
 ### sourcebook-editor
 
-Read `../sourcebook-editor/SKILL.md` and follow it on the files this pass changed. The requested outcome is to improve those documents and apply the edits. Leave pages this pass did not touch.
+Read `../sourcebook-editor/SKILL.md` and follow it on the files this pass changed. The requested outcome is to improve those documents and apply the edits. Leave pages this pass did not touch, story files, and generated catalog pages.
 
 ## 4. Record the run and report
 
-Write the current `HEAD` sha into `.sourcebook-version` only when the pass finished. A missing spec or a project with no guide still counts as finished. A missing sibling skill, a failed docs reader, or an unidentified workspace does not: leave any existing file unchanged so the next run repeats this mode. Skip this write when step 2 already refreshed the file and stopped. If `HEAD` is unavailable after a finished pass, write `none` and say the next run will be a first run.
+Write the current `HEAD` sha into `.sourcebook-version` only when the pass finished. A missing spec, a skipped `sourcebook-story`, a catalog stopped by a hand-written page, or a project with no guide still counts as finished. A missing sibling skill, a failed docs reader, or an unidentified workspace does not: leave any existing file unchanged so the next run repeats this mode. Skip this write when step 2 already refreshed the file and stopped. If `HEAD` is unavailable after a finished pass, write `none` and say the next run will be a first run.
 
 Report the mode, the baseline, each skill you ran or skipped and why, the files written or updated, and anything you could not verify. Commit or push only when the caller already asked, and include `.sourcebook-version` in that commit.

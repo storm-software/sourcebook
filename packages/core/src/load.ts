@@ -33,9 +33,14 @@ const IGNORED_DIRECTORIES = new Set([
   ".git"
 ]);
 
-async function collectMarkdown(
+/**
+ * List files under a directory whose names match `pattern`.
+ * Hidden entries and dependency or build directories are skipped.
+ */
+export async function collectFiles(
   directory: string,
-  recursive: boolean
+  pattern: RegExp,
+  recursive = true
 ): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
   const files: string[] = [];
@@ -45,10 +50,10 @@ async function collectMarkdown(
     const path = join(directory, entry.name);
     if (entry.isDirectory()) {
       if (!recursive || IGNORED_DIRECTORIES.has(entry.name)) continue;
-      files.push(...(await collectMarkdown(path, true)));
+      files.push(...(await collectFiles(path, pattern)));
       continue;
     }
-    if (entry.isFile() && /\.mdx?$/i.test(entry.name)) files.push(path);
+    if (entry.isFile() && pattern.test(entry.name)) files.push(path);
   }
 
   return files;
@@ -87,7 +92,7 @@ export async function loadDocumentationPages(
   options: LoadDocumentationPagesOptions = {}
 ): Promise<DocumentationPage[]> {
   const { path: pathPrefix, recursive = true, ...compileOptions } = options;
-  const files = (await collectMarkdown(directory, recursive)).sort(
+  const files = (await collectFiles(directory, /\.mdx?$/i, recursive)).sort(
     (left, right) => left.localeCompare(right)
   );
   const pages: DocumentationPage[] = [];

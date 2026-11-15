@@ -19,8 +19,15 @@
 export { compileDocumentationPage } from "./compile.js";
 export { DocumentationPageError } from "./errors.js";
 export { loadDocumentationPage, loadDocumentationPages } from "./load.js";
+export {
+  generateComponentStoryPage,
+  parseComponentStory,
+  writeComponentCatalog
+} from "./story.js";
 export type {
   CompileDocumentationPageOptions,
+  ComponentStory,
+  ComponentStoryVariant,
   DocumentationPage,
   InvalidDocumentationField,
   LoadDocumentationPagesOptions,

@@ -331,6 +331,7 @@ function describeKind(kind: DocumentationPageKind): string {
 export const documentationMarkdownInstructions = [
   "Markdown compiled by @sourcebook/core must include the fields for its page kind.",
   "The compiler uses remark and rehype: GitHub Flavored Markdown, GitHub alerts such as `> [!NOTE]`, `:::type` admonitions, heading ids written as `[#id]`, and table-of-contents markers `[toc]` and `[!toc]`.",
+  "A `.mdx` file must be valid MDX: use `{/* comments */}` instead of HTML comments, and escape a literal `{` or `<`. The compiler removes imports, exports, and expressions from the page and keeps the children of JSX components.",
   "Docs, blog, and guide pages put their fields in YAML front matter between --- lines at the top of the file.",
   "ADR and README pages keep their fields in the body so log4brains and GitHub can read them. Do not add YAML front matter to those files.",
   "Do not invent tags. Omit tags when the page has none. In front matter, tags may be a YAML list or a comma-separated string.",

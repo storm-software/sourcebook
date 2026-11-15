@@ -90,7 +90,7 @@ With local output, the skill writes under each identified project directory; oth
 
 ## Installation
 
-Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, `sourcebook-editor`, `sourcebook-readme`, `sourcebook-guide`, `sourcebook-adr`, and `sourcebook-openapi` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-editor` reviews and polishes existing documentation or blog updates, `sourcebook-readme` updates a project's `README.md`, `sourcebook-guide` writes a guided walk-through of one piece of functionality when you invoke it (`/sourcebook-guide <topic>`), `sourcebook-adr` records significant technology and design decisions as log4brains-compatible Architecture Decision Records, and `sourcebook-openapi` fills summaries, descriptions, tags, and other documentation fields in existing OpenAPI or Swagger specifications from the workspace; none of them requires a Sourcebook configuration file.
+Install the Sourcebook plugin from this repository to use the `sourcebook-docs`, `sourcebook-blog`, `sourcebook-editor`, `sourcebook-readme`, `sourcebook-guide`, `sourcebook-adr`, `sourcebook-openapi`, and `sourcebook-story` agent skills. The plugin bundles the readers, references, and helper scripts needed by each skill. `sourcebook-editor` reviews and polishes existing documentation or blog updates, `sourcebook-readme` updates a project's `README.md`, `sourcebook-guide` writes a guided walk-through of one piece of functionality when you invoke it (`/sourcebook-guide <topic>`), `sourcebook-adr` records significant technology and design decisions as log4brains-compatible Architecture Decision Records, `sourcebook-openapi` fills summaries, descriptions, tags, and other documentation fields in existing OpenAPI or Swagger specifications from the workspace, and `sourcebook-story` writes [Fumadocs Story](https://www.fumadocs.dev/docs/next/integrations/story) files (`*.story.tsx`) that show each component's usage, anatomy, and variants, then generates the component catalog's MDX pages from them with `@sourcebook/core`; none of them requires a Sourcebook configuration file.
 
 Before using `sourcebook-docs` or `sourcebook-blog`, add `sourcebook.config.*` to the target workspace and make sure `node` is available on `PATH` for the bundled configuration reader. TypeScript configuration files import `defineConfig` from `@sourcebook/config`; JSON, YAML, and TOML configurations do not require that package.
 
@@ -104,6 +104,7 @@ npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-b
 npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-readme
 npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-guide
 npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-openapi
+npx skills add https://github.com/storm-software/sourcebook --skill sourcebook-story
 ```
 
 **Claude Code:**
