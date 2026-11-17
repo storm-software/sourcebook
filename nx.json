@@ -3,7 +3,7 @@
   "release": {
     "groups": {
       "packages": {
-        "projects": ["packages/config"],
+        "projects": ["packages/config", "packages/tsdoc"],
         "projectsRelationship": "independent"
       }
     }

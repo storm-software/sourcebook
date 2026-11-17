@@ -69,6 +69,19 @@ function walk(
 export const remarkHeading: Plugin<[], Root> = () => (tree, file) => {
   const slugger = new GithubSlugger();
   const headings: DocumentationHeading[] = [];
+  // Generated API links use explicit member IDs. Reserve them before assigning
+  // automatic IDs so titles and comment headings cannot capture those links.
+  const explicitIds = new Set<string>();
+  walk(tree, node => {
+    if (node.type !== "heading") return;
+    const id = node.data?.hProperties?.id;
+    if (typeof id === "string" && id) explicitIds.add(id);
+    const last = node.children.at(-1);
+    if (last?.type === "text") {
+      const customId = HEADING_ID.exec(last.value)?.[1]?.trim();
+      if (customId) explicitIds.add(customId);
+    }
+  });
 
   walk(tree, node => {
     if (node.type !== "heading") return;
@@ -92,6 +105,8 @@ export const remarkHeading: Plugin<[], Root> = () => (tree, file) => {
     if (typeof properties.id !== "string" || !properties.id) {
       if (!text) return;
       properties.id = slugger.slug(text);
+      while (explicitIds.has(String(properties.id)))
+        properties.id = slugger.slug(text);
     }
 
     if (text) {

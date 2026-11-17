@@ -1,0 +1,20 @@
+{
+  "name": "@sourcebook/tsdoc",
+  "version": "0.0.1",
+  "type": "module",
+  "private": false,
+  "description": "Shared TSDoc tags for Sourcebook documentation and component stories",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "exports": {
+    ".": "./recommended.json",
+    "./recommended.json": "./recommended.json",
+    "./callouts.json": "./callouts.json",
+    "./core.json": "./core.json",
+    "./package.json": "./package.json"
+  },
+  "files": ["recommended.json", "callouts.json", "core.json"],
+  "publishConfig": {
+    "access": "public"
+  }
+}

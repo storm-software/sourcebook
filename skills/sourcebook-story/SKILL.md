@@ -83,6 +83,8 @@ export const story = defineStory({
 - **`controls`:** override a generated control only when it is wrong for the prop, for example an object or a node.
 - **`frame`:** use it for a component that fills the viewport, such as a layout. Frame arguments go through `postMessage()`, so use only serializable values: no functions and no JSX.
 
+The comment may also include `@remarks`, repeatable callout blocks (`@note`, `@info`, `@tip`, `@important`, `@warning`, `@caution`, `@danger`), and repeatable `@credit` or `@acknowledgements` blocks. Current `@sourcebook/core` renders these in the generated page. Use `@sourcebook/tsdoc/recommended.json` when configuring TSDoc tooling, and read `../sourcebook-tsdoc/references/comment-contract.md` for syntax and rendering limits. Preserve existing attribution; add credits only from source evidence or the user.
+
 ## 5. Write the TSDoc block
 
 Put the block directly above `export const story`. `@sourcebook/core` makes the page from it:

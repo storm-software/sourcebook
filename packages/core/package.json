@@ -14,11 +14,10 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "dependencies": {
     "@sourcebook/config": "workspace:*",
+    "@sourcebook/tsdoc": "workspace:*",
     "github-slugger": "catalog:",
     "hast-util-to-string": "catalog:",
     "mdast-util-to-string": "catalog:",
@@ -27,12 +26,15 @@
     "remark-gfm": "catalog:",
     "remark-mdx": "catalog:",
     "remark-rehype": "catalog:",
+    "typedoc": "catalog:",
     "typescript": "^6.0.3",
     "unified": "catalog:",
     "vfile": "catalog:",
     "yaml": "catalog:"
   },
   "devDependencies": {
+    "@microsoft/tsdoc": "catalog:",
+    "@microsoft/tsdoc-config": "catalog:",
     "@types/hast": "catalog:",
     "@types/mdast": "catalog:",
     "vitest": "catalog:"

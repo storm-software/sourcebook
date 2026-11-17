@@ -16,6 +16,13 @@
 
  ------------------------------------------------------------------- */
 
+export type {
+  ApiReference,
+  ApiReferenceDiagnostic,
+  ApiReferenceOptions,
+  ApiReferencePage
+} from "./api-types.js";
+export { generateApiReference, writeApiReference } from "./api.js";
 export { compileDocumentationPage } from "./compile.js";
 export { DocumentationPageError } from "./errors.js";
 export { loadDocumentationPage, loadDocumentationPages } from "./load.js";
@@ -24,6 +31,8 @@ export {
   parseComponentStory,
   writeComponentCatalog
 } from "./story.js";
+export { parseTSDocComment, renderTSDocFeatures } from "./tsdoc.js";
+export type { TSDocBlock, TSDocCallout, TSDocComment } from "./tsdoc.js";
 export type {
   CompileDocumentationPageOptions,
   ComponentStory,

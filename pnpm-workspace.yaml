@@ -3,11 +3,13 @@ packages:
   - packages/*
   - docs/*
 catalog:
-  "@cyclone-ui/cli": ^0.6.71
+  "@microsoft/tsdoc": ^0.17.1
+  "@microsoft/tsdoc-config": ^0.18.3
+  "@cyclone-ui/cli": ^0.6.72
   "@cyclone-ui/helpers": 0.3.81
   "@cyclone-ui/state": 0.0.83
-  "@cyclone-ui/tokens": ^0.3.68
-  "@ls-lint/ls-lint": ^2.3.1
+  "@cyclone-ui/tokens": ^0.3.69
+  "@ls-lint/ls-lint": ^2.3.2
   "@nx/devkit": 23.1.1
   "@nx/eslint-plugin": 23.1.1
   "@nx/js": 23.1.1
@@ -15,25 +17,25 @@ catalog:
   "@nx/vite": 23.1.1
   "@nx/vitest": 23.1.1
   "@nx/workspace": 23.1.1
-  "@powerlines/nx": ^0.13.254
-  "@powerlines/plugin-tsdown": ^0.1.615
-  "@powerlines/tsconfig": ^0.4.258
-  "@powerlines/tsdoc": ^0.2.206
-  "@shell-shock/nx": ^0.0.105
-  "@storm-software/config": ^1.138.85
-  "@storm-software/config-tools": ^1.190.149
-  "@storm-software/cspell": ^0.46.216
-  "@storm-software/eslint": ^0.170.184
-  "@storm-software/eslint-plugin-pnpm": ^0.0.112
-  "@storm-software/git-tools": ^2.132.6
-  "@storm-software/linting-tools": ^1.134.79
-  "@storm-software/markdownlint": ^0.30.304
-  "@storm-software/pnpm-tools": ^0.7.163
-  "@storm-software/prettier": ^0.59.202
-  "@storm-software/tsconfig": ^0.48.215
-  "@storm-software/tsdoc": ^0.13.301
-  "@storm-software/untyped": ^0.24.291
-  "@storm-software/workspace-tools": ^1.297.18
+  "@powerlines/nx": ^0.13.259
+  "@powerlines/plugin-tsdown": ^0.1.620
+  "@powerlines/tsconfig": ^0.4.262
+  "@powerlines/tsdoc": ^0.2.210
+  "@shell-shock/nx": ^0.0.109
+  "@storm-software/config": ^1.138.93
+  "@storm-software/config-tools": ^1.190.157
+  "@storm-software/cspell": ^0.46.224
+  "@storm-software/eslint": ^0.170.193
+  "@storm-software/eslint-plugin-pnpm": ^0.0.120
+  "@storm-software/git-tools": ^2.133.3
+  "@storm-software/linting-tools": ^1.134.88
+  "@storm-software/markdownlint": ^0.30.312
+  "@storm-software/pnpm-tools": ^0.7.171
+  "@storm-software/prettier": ^0.59.210
+  "@storm-software/tsconfig": ^0.48.223
+  "@storm-software/tsdoc": ^0.13.309
+  "@storm-software/untyped": ^0.24.299
+  "@storm-software/workspace-tools": ^1.297.29
   "@tamagui/adapt": 3.3.2
   "@tamagui/animate-presence": 3.3.2
   "@tamagui/constants": 3.3.2
@@ -64,10 +66,10 @@ catalog:
   "@types/react-dom": ^19.3.0
   "@typescript/native-preview": 7.0.0-dev.20251218.3
   copyfiles: ^2.4.1
-  eslint: ^10.12.0
+  eslint: ^10.15.0
   github-slugger: ^2.0.0
-  hast-util-from-html: ^2.0.3
-  hast-util-to-jsx-runtime: ^2.3.6
+  hast-util-from-html: ^2.1.0
+  hast-util-to-jsx-runtime: ^2.3.7
   hast-util-to-string: ^3.0.1
   lefthook: ^1.13.6
   log4brains: ^1.1.0
@@ -75,8 +77,8 @@ catalog:
   mdast-util-to-string: ^4.0.0
   motion: ^11.18.2
   nx: 23.1.1
-  powerlines: ^0.47.214
-  prettier: ^3.9.10
+  powerlines: ^0.47.219
+  prettier: ^3.10.1
   react: ^19.3.1
   react-dom: ^19.3.1
   react-native: ^0.87.1
@@ -87,12 +89,13 @@ catalog:
   remark-gfm: ^4.0.1
   remark-mdx: ^3.1.1
   remark-rehype: ^11.1.2
-  rimraf: ^6.1.3
+  rimraf: ^6.1.4
+  typedoc: ^0.28.20
   unified: ^11.0.5
   verdaccio: 6.0.5
   vfile: ^6.0.3
-  vite: ^8.3.4
-  vitest: ~4.1.11
+  vite: ^8.3.8
+  vitest: ~4.1.12
   c12: ^3.3.4
   yaml: ^2.9.1
   zx: ^8.8.5

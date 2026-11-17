@@ -1,6 +1,6 @@
 ---
 name: sourcebook
-description: Runs a workspace documentation pass by following the sourcebook-story, sourcebook-docs, sourcebook-guide, sourcebook-openapi, sourcebook-readme, and sourcebook-editor skills one at a time. Use when a schedule or the user asks to document a repository that has never been through Sourcebook, or to update component stories and their catalog, Markdown docs, guides, OpenAPI descriptions, and READMEs after code changes. Not for a single README, one guide, one spec, a blog post, an ADR, or a review of one page.
+description: Runs a workspace documentation pass by following the sourcebook-tsdoc, sourcebook-story, sourcebook-docs, sourcebook-guide, sourcebook-openapi, sourcebook-readme, and sourcebook-editor skills one at a time. Use when a schedule or the user asks to document a repository that has never been through Sourcebook, or to update component stories and their catalog, Markdown docs, guides, OpenAPI descriptions, and READMEs after code changes. Not for a single README, one guide, one spec, a blog post, an ADR, or a review of one page.
 argument-hint: "[first|update] [baseline git ref]"
 license: Apache-2.0
 metadata:
@@ -12,11 +12,11 @@ metadata:
 
 Run one documentation pass over the workspace. Do the work by reading each skill below and following that skill, in order, one at a time. Finish the current skill and note what it wrote before starting the next. Follow the loaded skill when it is already available; otherwise read the sibling file.
 
-These files must sit next to this skill: `../sourcebook-story/SKILL.md`, `../sourcebook-docs/SKILL.md`, `../sourcebook-guide/SKILL.md`, `../sourcebook-openapi/SKILL.md`, `../sourcebook-readme/SKILL.md`, `../sourcebook-editor/SKILL.md`. If one is missing, stop and name it.
+These files must sit next to this skill: `../sourcebook-tsdoc/SKILL.md`, `../sourcebook-story/SKILL.md`, `../sourcebook-docs/SKILL.md`, `../sourcebook-guide/SKILL.md`, `../sourcebook-openapi/SKILL.md`, `../sourcebook-readme/SKILL.md`, `../sourcebook-editor/SKILL.md`. If one is missing, stop and name it.
 
 This skill does not run `sourcebook-blog` or `sourcebook-adr`.
 
-Write documentation only. Story files (`*.story.{js,jsx,ts,tsx}`) and the catalog pages generated from them count as documentation. Leave application source, generated specs, and tool-owned sections unchanged.
+Write documentation only. TSDoc comment changes in maintained TypeScript source count as documentation; preserve executable code. Story files (`*.story.{js,jsx,ts,tsx}`) and the catalog pages generated from them count as documentation. Leave runtime implementation, generated specs, and tool-owned sections unchanged.
 
 ## 1. Classify the run
 
@@ -45,6 +45,7 @@ Carry the mode, baseline, and code-change list into every skill. On a conflict a
 
 Copy this list and complete it in order:
 
+- [ ] sourcebook-tsdoc
 - [ ] sourcebook-story
 - [ ] sourcebook-docs
 - [ ] sourcebook-guide
@@ -52,6 +53,10 @@ Copy this list and complete it in order:
 - [ ] sourcebook-readme
 - [ ] sourcebook-editor
 - [ ] `.sourcebook-version`
+
+### sourcebook-tsdoc
+
+Read `../sourcebook-tsdoc/SKILL.md` and follow it. Run this before story and Markdown generation so those steps can use accurate source comments. On a first run, review maintained TypeScript across all workspace packages; on an update run, review affected declarations and comments made stale by the code-change list. Edit comments only. A workspace without maintained TypeScript is a finished skip.
 
 ### sourcebook-story
 

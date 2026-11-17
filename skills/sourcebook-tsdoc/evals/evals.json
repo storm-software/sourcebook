@@ -1,0 +1,40 @@
+{
+  "skill_name": "sourcebook-tsdoc",
+  "evals": [
+    {
+      "id": 1,
+      "name": "api-contract",
+      "prompt": "Review TypeScript comments on parseComponentStory and writeComponentCatalog. Provide improved TSDoc for both, based only on implementation and tests, including failure cases and defaults. Keep runtime behavior unchanged.",
+      "expected_output": "Replacement comments with accurate parameter names, summary and tag extraction, catalog defaults, source-owned failures, and verification limits.",
+      "files": [
+        "packages/core/src/story.ts",
+        "packages/core/src/story.test.ts",
+        "packages/core/src/load.ts"
+      ],
+      "assertions": [
+        "Documents all declaration parameters with their exact names.",
+        "Explains catalog title and tsconfig defaults.",
+        "Describes parse failures and rejection before catalog writes.",
+        "Preserves current custom feature behavior and explains rendering limits."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "custom-story",
+      "prompt": "Document a Badge story with summary, a warning about relying on color alone, an acknowledgement to the design team at https://example.com/team, anatomy and a fenced TSX example. Explain which comments Sourcebook consumes and how to verify generated output. Do not invent other behavior.",
+      "expected_output": "A hypothetical story comment using configured warning and acknowledgement blocks, anatomy, a fenced TSX example, and accurate source-to-HTML verification.",
+      "files": [
+        "packages/core/src/story.ts",
+        "packages/core/src/tsdoc.ts",
+        "packages/core/src/tsdoc.test.ts"
+      ],
+      "assertions": [
+        "Uses a warning block and repeats the color-alone guidance.",
+        "Keeps the supplied acknowledgement URL in a configured credit block.",
+        "Includes a summary, anatomy, and fenced TSX example above the story export.",
+        "Explains the parse, generate, compile sequence and checks rendered warning and credit.",
+        "Distinguishes a hypothetical Badge API from verified component behavior."
+      ]
+    }
+  ]
+}

@@ -22,6 +22,7 @@ import type {
   GuidePerspective
 } from "@sourcebook/config";
 import type { PluggableList } from "unified";
+import type { TSDocCallout } from "./tsdoc.js";
 
 /**
  * One heading in a compiled page's table of contents.
@@ -247,6 +248,15 @@ export interface ComponentStory {
    * Full TSDoc summary, as Markdown.
    */
   overview: string;
+
+  /** Markdown from `@remarks`, when present. */
+  remarks?: string;
+
+  /** Custom callout blocks in source order. */
+  callouts?: TSDocCallout[];
+
+  /** Markdown from each `@credit` and `@acknowledgements` block. */
+  acknowledgements?: string[];
 
   /**
    * Markdown from the `@anatomy` tag.

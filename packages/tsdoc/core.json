@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+  "tagDefinitions": [
+    {
+      "tagName": "@anatomy",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@usage",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@credit",
+      "syntaxKind": "block",
+      "allowMultiple": true
+    },
+    {
+      "tagName": "@acknowledgements",
+      "syntaxKind": "block",
+      "allowMultiple": true
+    }
+  ]
+}
