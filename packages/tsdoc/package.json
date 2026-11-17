@@ -1,6 +1,6 @@
 {
   "name": "@sourcebook/tsdoc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "private": false,
   "description": "Shared TSDoc tags for Sourcebook documentation and component stories",

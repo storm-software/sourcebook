@@ -2,6 +2,12 @@
 
 # Changelog for Sourcebook - Config
 
+## [0.0.16](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.16) (11/17/2026)
+
+### Features
+
+- **tsdoc:** Initial check-in of the `tsdoc` package, the `sourcebook-tsdoc` skill, and improved tsdoc parsing logic ([5e253cd](https://github.com/storm-software/sourcebook/commit/5e253cd))
+
 ## [0.0.14](https://github.com/storm-software/sourcebook/releases/tag/config%400.0.14) (11/15/2026)
 
 ### Bug Fixes
