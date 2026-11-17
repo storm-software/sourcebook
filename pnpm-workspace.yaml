@@ -76,7 +76,7 @@ catalog:
   markdownlint-cli2: 0.17.2
   mdast-util-to-string: ^4.0.0
   motion: ^11.18.2
-  nx: 23.1.1
+  nx: 23.2.1
   powerlines: ^0.47.219
   prettier: ^3.10.1
   react: ^19.3.1
